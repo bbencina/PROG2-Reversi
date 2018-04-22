@@ -4,7 +4,11 @@ public class Polje {
 	
 	protected int vrstica, stolpec;
 	
-	protected Ploscek ploscek;
+	/**
+	 * Plošček lasten temu polju (črn ali bel).
+	 * Če plošček = null, je polje prazno.
+	 */
+	public Ploscek ploscek;
 	
 	public Polje(int vrstica, int stolpec){
 		this.vrstica = vrstica;
