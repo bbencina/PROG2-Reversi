@@ -22,7 +22,7 @@ public class Stanje {
 		}
 		
 		steviloPlosckov[0] = black;
-		steviloPlosckov[0] = white;
+		steviloPlosckov[1] = white;
 		
 		return steviloPlosckov;
 	}
