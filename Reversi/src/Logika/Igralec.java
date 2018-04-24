@@ -1,13 +1,17 @@
 package Logika;
 
-public class Igralec {
-	/**
-	 * Določa igralčevo barvo ploščka.
-	 */
-	public final Ploscek ploscek;
+public enum Igralec {
+	BLACK,
+	WHITE;
 	
-	public Igralec(Ploscek ploscek){
-		this.ploscek = ploscek;
+	public Ploscek ploscek() {
+		if (this == BLACK) {
+			return Ploscek.BLACK;
+		} else {
+			return Ploscek.WHITE;
+		}
 	}
+	
+	
 
 }

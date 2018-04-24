@@ -7,8 +7,6 @@ public class Igra {
 	 */
 	public Igralec igralecNaPotezi;
 	
-	public Igralec igralecCrni, igralecBeli;
-	
 	/**
 	 * Plošča lastna tej igri.
 	 */
@@ -17,9 +15,6 @@ public class Igra {
 	public Igra() {
 		plosca = new Plosca();
 		
-		igralecCrni = new Igralec(Ploscek.BLACK);
-		igralecBeli = new Igralec(Ploscek.WHITE);
-		
-		igralecNaPotezi = igralecCrni;
+		igralecNaPotezi = Igralec.BLACK;
 	}
 }
