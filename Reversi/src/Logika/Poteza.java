@@ -1,13 +1,6 @@
 package Logika;
 
-/**
- * @author AkanusGod
- *
- */
-/**
- * @author AkanusGod
- *
- */
+
 public class Poteza {
 	
 	public Igralec igralec;
