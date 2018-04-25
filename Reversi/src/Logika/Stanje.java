@@ -1,6 +1,10 @@
 package Logika;
 
+import java.util.HashSet;
+
 public class Stanje {
+
+	private HashSet<Poteza> moznePoteze;
 	
 	public Stanje() {
 	}
@@ -25,6 +29,35 @@ public class Stanje {
 		steviloPlosckov[1] = white;
 		
 		return steviloPlosckov;
+	}
+	
+	/**
+	 * @param plosca
+	 * @param igralec
+	 * V množico moznePoteze doda vse poteze, ki jih lahko igralec izvede.
+	 */
+	public void veljavnePoteze(Plosca plosca, Igralec igralec) {
+		for (int i = 0; i < Plosca.velikost; i++) {
+			for (int j = 0; j < Plosca.velikost; j++) {
+				Polje trenutnoPolje = plosca.polje[i][j];
+				if (trenutnoPolje.ploscek != null) {
+					Poteza poteza = new Poteza(plosca, igralec, trenutnoPolje);
+					if (poteza.jeVeljavna()) {
+						moznePoteze.add(poteza);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @param plosca
+	 * @param igralec
+	 * @return true, če ima igralec na razpolago vsaj eno veljavno potezo.
+	 */
+	public boolean obstajaPoteza(Plosca plosca, Igralec igralec){
+		veljavnePoteze(plosca, igralec);
+		return this.moznePoteze.size() != 0;
 	}
 
 }

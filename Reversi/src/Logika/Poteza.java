@@ -60,7 +60,7 @@ public class Poteza {
 	}
 	
 	/**
-	 * Preveri veljavnosti poteze.
+	 * Preveri veljavnost poteze.
 	 */
 	public boolean jeVeljavna(){
 		boolean successFlag = false;

@@ -20,14 +20,23 @@ public class Igra {
 	
 	public void igrajSe(){
 		/**
-		 * Za igralca na potezi preveri, če ima na razpolago veljavne poteze. -Stanje
-		 * Če so, počaka, da igralec opravi potezo. -Poteza
-		 * Zamenja igralca na potezi. -Tukaj
+		 * Za igralca na potezi preveri, če ima na razpolago veljavne poteze. -Stanje -metoda obstajaPoteza
+		 * Če so, počaka, da igralec opravi potezo. -Poteza -metoda opraviPotezo
+		 * Zamenja igralca na potezi. -Igralec -metoda naslednji()
 		 * 
 		 * Če nobeden od igralcev nima veljavnih potez - konec igre. -Stanje
+		 * (Lahko preverjamo tako, da definiramo števec zaporednih neveljavnih potez - ko je enak 2, je igre konec)
+		 * 
 		 * Če je plošča polna -> ni veljavnih potez -že preverjeno.
 		 * 
 		 * Razglasi rezultat. -Stanje -Igralec
 		 */
+		
+		//if obstajaPoteza
+		
+			//opraviPotezo
+		
+		igralecNaPotezi.naslednji();
+		
 	}
 }

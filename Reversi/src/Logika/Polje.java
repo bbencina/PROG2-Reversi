@@ -6,7 +6,7 @@ public class Polje {
 	
 	/**
 	 * Plošček lasten temu polju (črn ali bel).
-	 * Če plošček = null, je polje prazno.
+	 * Če ploscek = null, je polje prazno.
 	 */
 	public Ploscek ploscek;
 	

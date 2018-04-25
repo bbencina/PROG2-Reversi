@@ -13,5 +13,12 @@ public enum Igralec {
 	}
 	
 	
+	public Igralec naslednji(){
+		if (this == BLACK) {
+			return WHITE;
+		} else {
+			return BLACK;
+		}
+	}
 
 }

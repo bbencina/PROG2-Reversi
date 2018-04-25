@@ -7,7 +7,7 @@ public class Plosca {
 	public Polje[][] polje;
 	
 	{
-		//Velikost plosce mora biti zaradi začetne pozicije VEDNO sodo število.
+		//Velikost plošče mora biti zaradi začetne pozicije VEDNO sodo število.
 		assert(Plosca.velikost % 2 == 0);
 	}
 	
