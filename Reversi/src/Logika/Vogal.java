@@ -1,5 +1,6 @@
 package Logika;
 
+
 public enum Vogal {
 	LEVIZGORNJI,
 	LEVISPODNJI,
@@ -14,7 +15,7 @@ public enum Vogal {
 		return false;
 	}
 	
-	public Vogal vogal(Polje polje) {
+	public static Vogal vogal(Polje polje) {
 		assert(Vogal.jeNaVogalu(polje));
 		
 		if (polje.vrstica == 0 && polje.stolpec == 0) {
