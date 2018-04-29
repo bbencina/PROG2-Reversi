@@ -5,20 +5,10 @@ public enum Igralec {
 	WHITE;
 	
 	public Ploscek ploscek() {
-		if (this == BLACK) {
-			return Ploscek.BLACK;
-		} else {
-			return Ploscek.WHITE;
-		}
+		return (this == BLACK ? Ploscek.BLACK : Ploscek.WHITE);
 	}
-	
 	
 	public Igralec naslednji(){
-		if (this == BLACK) {
-			return WHITE;
-		} else {
-			return BLACK;
-		}
+		return (this == BLACK ? WHITE : BLACK);
 	}
-
 }
