@@ -53,6 +53,7 @@ public class Igra {
 				this.igralecNaPotezi.zaporedneNeveljavne = 0;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
 				stanje = this.stanje();
+				System.out.println(stanje);
 			}
 			else {
 				// Posodobi število neveljavnih in zamenja igralca.
