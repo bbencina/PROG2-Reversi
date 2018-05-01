@@ -8,8 +8,11 @@ public enum Ploscek {
 	 * @param ploscek
 	 * "Obrne" plošček oz. spremeni barvo podanemu ploščku.
 	 */
-	public static void obrniSe(Ploscek ploscek) {
-		if (ploscek == Ploscek.BLACK) ploscek = Ploscek.WHITE;
-		if (ploscek == Ploscek.WHITE) ploscek = Ploscek.BLACK;
+	public static Ploscek obrniSe(Ploscek ploscek) {
+		return (ploscek == BLACK ? WHITE : BLACK);
+	}
+	
+	public Ploscek nasprotni() {
+		return (this == BLACK ? WHITE : BLACK);
 	}
 }

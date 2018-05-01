@@ -27,11 +27,42 @@ public class Igra {
 	 * Odgovorna za igranje igre.
 	 */
 	public void igrajSe(){
+		// Začasne spremenljivke:
+		int zaporednaPoteza = 0;
+		
+		
 		/**
 		 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
 		 */
 		Stanje stanje;
 		while (true) {
+			/**
+			 * Vmesen blok, namenjen izpisovanju igre v konzolo.
+			 */
+			for (int i = 0; i < Plosca.velikost; i++) {
+				System.out.print("*");
+			}
+			System.out.print("\n");
+			
+			System.out.println("Zaporedna poteza: " + zaporednaPoteza);
+			zaporednaPoteza++;
+			
+			System.out.print("Igralec na potezi: ");
+			if (igralecNaPotezi == Igralec.BLACK) {
+				System.out.println("BLACK");
+			} else if (igralecNaPotezi == Igralec.WHITE) {
+				System.out.println("WHITE");
+			} else {
+				System.out.println("PLAYER_ERROR");
+			}
+			
+			this.plosca.izpisiSe();
+			
+			for (int i = 0; i < Plosca.velikost; i++) {
+				System.out.print("*");
+			}
+			System.out.print("\n");
+			
 			//preveri, ali za trenutnega igralca obstajajo poteze in hkrati nastavi možne poteze igralcu.
 			if (this.obstajaPoteza(plosca, igralecNaPotezi)) {
 				Poteza poteza = null;
@@ -60,7 +91,10 @@ public class Igra {
 				this.igralecNaPotezi.zaporedneNeveljavne++;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
 				stanje = this.stanje();
+				System.out.println(stanje);
 			}
+			
+			
 			
 			/**
 			 * Blok, ki po opravljeni potezi obravnava stanje igre.

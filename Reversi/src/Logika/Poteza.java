@@ -67,13 +67,15 @@ public class Poteza {
 		
 		int vrstica = this.polje.vrstica, stolpec = this.polje.stolpec;
 		
+		if (!this.polje.jePrazno()) return false;
+		
 		for (Smer s : smer) {
 			int koef = 1;
 			while (polje.vrstica + koef * s.y >= 0 && polje.stolpec + koef * s.x >= 0 &&
 					polje.vrstica + koef * s.y < Plosca.velikost && polje.stolpec + koef * s.x < Plosca.velikost){
 				vrstica = polje.vrstica + koef * s.y;
 				stolpec = polje.stolpec + koef * s.x;
-				if (this.plosca.polje[vrstica][stolpec].ploscek == null){
+				if (this.plosca.polje[vrstica][stolpec].jePrazno()){
 					break;
 				} else if (this.plosca.polje[vrstica][stolpec].ploscek == this.igralec.ploscek() && koef == 1){
 					break;
@@ -104,10 +106,13 @@ public class Poteza {
 				this.polje.ploscek = Ploscek.WHITE;
 			}
 			//Nato še obrnemo preostale ploščke, ki jih igralec odvzame nasprotniku.
-			while (this.plosca.polje[polje.vrstica + koef * s.y][polje.stolpec + koef * s.x].ploscek != igralec.ploscek()){
+			// Še enkrat dodan pogoj za ploščo, ker se pojavlja napaka.
+			while (this.plosca.polje[polje.vrstica + koef * s.y][polje.stolpec + koef * s.x].ploscek == igralec.ploscek().nasprotni() &&
+					polje.vrstica + koef * s.y >= 0 && polje.stolpec + koef * s.x >= 0 && 
+					polje.vrstica + koef * s.y < Plosca.velikost && polje.stolpec + koef * s.x < Plosca.velikost){
 				vrstica = polje.vrstica + koef * s.y;
 				stolpec = polje.stolpec + koef * s.x;
-				Ploscek.obrniSe(this.plosca.polje[vrstica][stolpec].ploscek);
+				this.plosca.polje[vrstica][stolpec].ploscek = Ploscek.obrniSe(this.plosca.polje[vrstica][stolpec].ploscek);
 				koef++;
 			}
 		}
