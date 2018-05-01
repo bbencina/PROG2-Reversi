@@ -3,6 +3,7 @@ package Logika;
 import java.util.Scanner;
 
 public class Igra {
+	
 	/**
 	 * Igralec trenutno na potezi.
 	 * (Zaradi konstantnega spreminjanja barv ploščkov se ne splača računati.)
@@ -26,11 +27,11 @@ public class Igra {
 	 * Odgovorna za igranje igre.
 	 */
 	public void igrajSe(){
+		/**
+		 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
+		 */
+		Stanje stanje;
 		while (true) {
-			/**
-			 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
-			 */
-			Stanje stanje;
 			//preveri, ali za trenutnega igralca obstajajo poteze in hkrati nastavi možne poteze igralcu.
 			if (this.obstajaPoteza(plosca, igralecNaPotezi)) {
 				Poteza poteza = null;
@@ -45,7 +46,7 @@ public class Igra {
 					stolpec = in.nextInt();
 					poteza = this.izberiPotezo(this.igralecNaPotezi, vrstica, stolpec);
 				}
-				in.close();
+				in.reset();
 				// ...jo opravi...
 				poteza.opraviPotezo();
 				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
@@ -115,7 +116,7 @@ public class Igra {
 		for (int i = 0; i < Plosca.velikost; i++) {
 			for (int j = 0; j < Plosca.velikost; j++) {
 				Polje trenutnoPolje = plosca.polje[i][j];
-				if (trenutnoPolje.ploscek != null) {
+				if (trenutnoPolje.jePrazno()) {
 					Poteza poteza = new Poteza(plosca, igralec, trenutnoPolje);
 					if (poteza.jeVeljavna()) {
 						igralec.moznePoteze.add(poteza);
@@ -164,7 +165,7 @@ public class Igra {
 			if (rezultat[0] == rezultat[1]) return Stanje.NEODLOCENO;
 			else return (rezultat[0] < rezultat[1] ? Stanje.ZMAGA_WHITE : Stanje.ZMAGA_BLACK);	
 		} else {
-			igralecNaPotezi.naslednji();
+			igralecNaPotezi = igralecNaPotezi.naslednji();
 			return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 		}
 	}

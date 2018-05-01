@@ -97,10 +97,18 @@ public class Poteza {
 	private void opraviSe(HashSet<Smer> smeri){
 		for (Smer s : smeri){
 			int koef = 1, vrstica = this.polje.vrstica, stolpec = this.polje.stolpec;
+			//Najprej postavimo plošček na izbrano polje.
+			if (this.igralec == Igralec.BLACK) {
+				this.polje.ploscek = Ploscek.BLACK;
+			} else {
+				this.polje.ploscek = Ploscek.WHITE;
+			}
+			//Nato še obrnemo preostale ploščke, ki jih igralec odvzame nasprotniku.
 			while (this.plosca.polje[polje.vrstica + koef * s.y][polje.stolpec + koef * s.x].ploscek != igralec.ploscek()){
 				vrstica = polje.vrstica + koef * s.y;
 				stolpec = polje.stolpec + koef * s.x;
 				Ploscek.obrniSe(this.plosca.polje[vrstica][stolpec].ploscek);
+				koef++;
 			}
 		}
 	}

@@ -20,10 +20,10 @@ public class Plosca {
 		}
 		
 		// Nastavitev začetne postavitve na plošči
-		polje[Plosca.velikost / 2][Plosca.velikost / 2].ploscek = Ploscek.WHITE;
-		polje[Plosca.velikost / 2][(Plosca.velikost / 2) + 1].ploscek = Ploscek.BLACK;
-		polje[(Plosca.velikost / 2) + 1][Plosca.velikost / 2].ploscek = Ploscek.BLACK;
-		polje[(Plosca.velikost / 2) + 1][(Plosca.velikost / 2) + 1].ploscek = Ploscek.WHITE;
+		polje[Plosca.velikost / 2 - 1][Plosca.velikost / 2 - 1].ploscek = Ploscek.WHITE;
+		polje[Plosca.velikost / 2 - 1][(Plosca.velikost / 2)].ploscek = Ploscek.BLACK;
+		polje[(Plosca.velikost / 2)][Plosca.velikost / 2 - 1].ploscek = Ploscek.BLACK;
+		polje[(Plosca.velikost / 2)][(Plosca.velikost / 2)].ploscek = Ploscek.WHITE;
 	}
 
 }
