@@ -82,6 +82,7 @@ public class Igra {
 				poteza.opraviPotezo();
 				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
 				this.igralecNaPotezi.zaporedneNeveljavne = 0;
+				this.igralecNaPotezi.moznePoteze.clear();
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
 				stanje = this.stanje();
 				System.out.println(stanje);
@@ -179,6 +180,8 @@ public class Igra {
 	 */
 	public Poteza izberiPotezo(Igralec igralec, int vrstica, int stolpec) {
 		for (Poteza p : igralec.moznePoteze) {
+			System.out.print(p.polje.vrstica + " ");
+			System.out.println(p.polje.stolpec);
 			
 			assert(p.igralec == igralec);
 			

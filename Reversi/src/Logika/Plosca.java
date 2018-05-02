@@ -29,7 +29,7 @@ public class Plosca {
 	public void izpisiSe() {
 		// Zgornji rob plošče
 		for (int i = 0; i < Plosca.velikost; i++) {
-			System.out.print(" -");
+			System.out.print(" " + i);
 		}
 		System.out.print("\n");
 		
@@ -46,7 +46,7 @@ public class Plosca {
 				}
 				System.out.print("|");
 			}
-			System.out.print("\n");
+			System.out.print(i + "\n");
 		}
 		
 		// Spodnji rob plošče
