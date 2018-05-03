@@ -1,24 +1,20 @@
 package Logika;
 
-public class Polje {
+public enum Polje {
+	BLACK,
+	WHITE,
+	PRAZNO;
 	
-	protected int vrstica, stolpec;
-	
-	/**
-	 * Plošček lasten temu polju (črn ali bel).
-	 * Če ploscek = null, je polje prazno.
-	 */
-	public Ploscek ploscek;
-	
-	public Polje(int vrstica, int stolpec){
-		this.vrstica = vrstica;
-		this.stolpec = stolpec;
-		
-		this.ploscek = null;
+	public static Polje obrniPloscek(Polje polje) {
+		if (polje == PRAZNO){
+			return PRAZNO;
+		}
+		return (polje == BLACK ? WHITE : BLACK);
 	}
 	
-	public boolean jePrazno(){
-		return this.ploscek == null;
+	public Polje nasprotno() {
+		if (this == PRAZNO) return PRAZNO;
+		return (this == BLACK ? WHITE : BLACK);
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 public class Poteza {
 	
 	public Igralec igralec;
-	public Polje polje;
+	protected int vrstica, stolpec;
 	public Plosca plosca;
 	
 	private HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
@@ -40,9 +40,10 @@ public class Poteza {
 	 * @param igralec - igralec, ki poskuša narediti potezo;
 	 * @param polje - polje, na katerega igralec poskuša postaviti plošček;
 	 */
-	public Poteza(Plosca plosca, Igralec igralec, Polje polje) {
+	public Poteza(Plosca plosca, Igralec igralec, int vrstica, int stolpec) {
 		this.igralec = igralec;
-		this.polje = polje;
+		this.vrstica = vrstica;
+		this.stolpec = stolpec;
 		this.plosca = plosca;
 	}
 	
@@ -51,7 +52,7 @@ public class Poteza {
 	 * Glavna metoda za opravljanje poteze. Preveri njeno veljavnost in jo v primeru, da je veljavna, tudi opravi.
 	 * Vrne true, če je bila poteza opravljena, false sicer.
 	 */
-	public boolean opraviPotezo(){
+	protected boolean opraviPotezo(){
 		if (this.jeVeljavna()){
 			this.opraviSe(this.ugodneSmeri);
 			return true;
@@ -62,24 +63,24 @@ public class Poteza {
 	/**
 	 * Preveri veljavnost poteze in nastavi ugodne smeri, če obstajajo.
 	 */
-	public boolean jeVeljavna(){
+	protected boolean jeVeljavna(){
 		boolean successFlag = false;
 		
-		int vrstica = this.polje.vrstica, stolpec = this.polje.stolpec;
+		int vrstica = this.vrstica, stolpec = this.stolpec;
 		
-		if (!this.polje.jePrazno()) return false;
+		if (this.plosca.polje[this.vrstica][this.stolpec] != Polje.PRAZNO) return false;
 		
 		for (Smer s : smer) {
 			int koef = 1;
-			while (polje.vrstica + koef * s.y >= 0 && polje.stolpec + koef * s.x >= 0 &&
-					polje.vrstica + koef * s.y < Plosca.velikost && polje.stolpec + koef * s.x < Plosca.velikost){
-				vrstica = polje.vrstica + koef * s.y;
-				stolpec = polje.stolpec + koef * s.x;
-				if (this.plosca.polje[vrstica][stolpec].jePrazno()){
+			while (this.vrstica + koef * s.y >= 0 && this.stolpec + koef * s.x >= 0 &&
+					this.vrstica + koef * s.y < Plosca.velikost && this.stolpec + koef * s.x < Plosca.velikost){
+				vrstica = this.vrstica + koef * s.y;
+				stolpec = this.stolpec + koef * s.x;
+				if (this.plosca.polje[vrstica][stolpec] == Polje.PRAZNO){
 					break;
-				} else if (this.plosca.polje[vrstica][stolpec].ploscek == this.igralec.ploscek() && koef == 1){
+				} else if (this.plosca.polje[vrstica][stolpec] == this.igralec.barva() && koef == 1){
 					break;
-				} else if (koef > 1 && this.plosca.polje[vrstica][stolpec].ploscek == this.igralec.ploscek()){
+				} else if (koef > 1 && this.plosca.polje[vrstica][stolpec] == this.igralec.barva()){
 					ugodneSmeri.add(s);
 					successFlag = true;
 					break;
@@ -98,21 +99,21 @@ public class Poteza {
 	 */
 	private void opraviSe(HashSet<Smer> smeri){
 		for (Smer s : smeri){
-			int koef = 1, vrstica = this.polje.vrstica, stolpec = this.polje.stolpec;
+			int koef = 1, vrstica = this.vrstica, stolpec = this.stolpec;
 			//Najprej postavimo plošček na izbrano polje.
 			if (this.igralec == Igralec.BLACK) {
-				this.polje.ploscek = Ploscek.BLACK;
+				this.plosca.polje[this.vrstica][this.stolpec]= Polje.BLACK;
 			} else {
-				this.polje.ploscek = Ploscek.WHITE;
+				this.plosca.polje[this.vrstica][this.stolpec] = Polje.WHITE;
 			}
 			//Nato še obrnemo preostale ploščke, ki jih igralec odvzame nasprotniku.
 			// Še enkrat dodan pogoj za ploščo, ker se pojavlja napaka.
-			while (this.plosca.polje[polje.vrstica + koef * s.y][polje.stolpec + koef * s.x].ploscek == igralec.ploscek().nasprotni() &&
-					polje.vrstica + koef * s.y >= 0 && polje.stolpec + koef * s.x >= 0 && 
-					polje.vrstica + koef * s.y < Plosca.velikost && polje.stolpec + koef * s.x < Plosca.velikost){
-				vrstica = polje.vrstica + koef * s.y;
-				stolpec = polje.stolpec + koef * s.x;
-				this.plosca.polje[vrstica][stolpec].ploscek = Ploscek.obrniSe(this.plosca.polje[vrstica][stolpec].ploscek);
+			while (this.plosca.polje[this.vrstica + koef * s.y][this.stolpec + koef * s.x] == igralec.barva().nasprotno() &&
+					this.vrstica + koef * s.y >= 0 && this.stolpec + koef * s.x >= 0 && 
+					this.vrstica + koef * s.y < Plosca.velikost && this.stolpec + koef * s.x < Plosca.velikost){
+				vrstica = this.vrstica + koef * s.y;
+				stolpec = this.stolpec + koef * s.x;
+				this.plosca.polje[vrstica][stolpec] = Polje.obrniPloscek(this.plosca.polje[vrstica][stolpec]);
 				koef++;
 			}
 		}
