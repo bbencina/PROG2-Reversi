@@ -22,10 +22,7 @@ public class Igra {
 		igralecNaPotezi = Igralec.BLACK;
 	}
 	
-	/**
-	 * Glavna metoda igre. Požene se v main metodi.
-	 * Odgovorna za igranje igre.
-	 */
+	
 	public void igrajSe(){
 		// Začasne spremenljivke:
 		int zaporednaPoteza = 0;
