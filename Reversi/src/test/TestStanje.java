@@ -1,8 +1,8 @@
-package Test;
+package test;
 
-import Logika.Igra;
-import Logika.Stanje;
-import Logika.Plosca;
+import logika.Igra;
+import logika.Stanje;
+import logika.Plosca;
 import junit.framework.TestCase;
 
 public class TestStanje extends TestCase {
@@ -17,7 +17,7 @@ public class TestStanje extends TestCase {
 	 * Test preverja, da števca ploščkov ne prekoračita velikosti plošče.
 	 */
 	public void testPrestejPoBarvah() {
-		assertTrue(Igra.prestejPoBarvah(igra.plosca)[0] + Igra.prestejPoBarvah(igra.plosca)[1] <= Plosca.velikost * Plosca.velikost);
+		assertTrue(igra.plosca.prestejPoBarvah()[0] + igra.plosca.prestejPoBarvah()[1] <= Plosca.velikost * Plosca.velikost);
 	}
 
 }

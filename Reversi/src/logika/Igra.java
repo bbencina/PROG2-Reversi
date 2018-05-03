@@ -1,5 +1,7 @@
-package Logika;
+//dummy
+package logika;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Igra {
@@ -15,18 +17,18 @@ public class Igra {
 	 */
 	public Plosca plosca;
 	
+	private int zaporedneNeveljavne;
+	
 	
 	public Igra() {
 		plosca = new Plosca();
+		zaporedneNeveljavne = 0;
 		
 		igralecNaPotezi = Igralec.BLACK;
 	}
 	
-	/**
-	 * Glavna metoda igre. Požene se v main metodi.
-	 * Odgovorna za igranje igre.
-	 */
-	public void igrajSe(){
+	
+	protected void igrajSe(){
 		// Začasne spremenljivke:
 		int zaporednaPoteza = 0;
 		
@@ -75,21 +77,20 @@ public class Igra {
 					vrstica = in.nextInt();
 					System.out.println("Vnesi stolpec: ");
 					stolpec = in.nextInt();
-					poteza = this.izberiPotezo(this.igralecNaPotezi, vrstica, stolpec);
+					poteza = this.izberiPotezo(vrstica, stolpec);
 				}
 				in.reset();
 				// ...jo opravi...
 				poteza.opraviPotezo();
 				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
-				this.igralecNaPotezi.zaporedneNeveljavne = 0;
-				this.igralecNaPotezi.moznePoteze.clear();
+				this.zaporedneNeveljavne = 0;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
 				stanje = this.stanje();
 				System.out.println(stanje);
 			}
 			else {
 				// Posodobi število neveljavnih in zamenja igralca.
-				this.igralecNaPotezi.zaporedneNeveljavne++;
+				this.zaporedneNeveljavne++;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
 				stanje = this.stanje();
 				System.out.println(stanje);
@@ -121,45 +122,24 @@ public class Igra {
 	
 	/**
 	 * @param plosca
-	 * @return par števil, prvo je število črnih in drugo število belih ploščkov na podani plošči.
-	 */
-	public static int[] prestejPoBarvah(Plosca plosca) {
-		int[] steviloPlosckov = new int[2];
-		
-		int black = 0, white = 0;
-		
-		for (int i = 0; i < Plosca.velikost; i++) {
-			for (int j = 0; j < Plosca.velikost; j++) {
-				if (plosca.polje[i][j].ploscek == Ploscek.BLACK) black++;
-				if (plosca.polje[i][j].ploscek == Ploscek.WHITE) white++;
-			}
-		}
-		
-		steviloPlosckov[0] = black;
-		steviloPlosckov[1] = white;
-		
-		return steviloPlosckov;
-	}
-	
-	/**
-	 * @param plosca
 	 * @param igralec
 	 * V množico moznePoteze doda vse poteze, ki jih lahko igralec izvede.
 	 * Kliče jo metoda obstajaPoteza.
 	 * Paziti je treba, da se ta metoda res pokliče, drugače bo zmeda.
 	 */
-	public void veljavnePoteze(Plosca plosca, Igralec igralec) {
+	private HashSet<Poteza> veljavnePoteze() {
+		HashSet<Poteza> moznePoteze = new HashSet<Poteza>();
 		for (int i = 0; i < Plosca.velikost; i++) {
 			for (int j = 0; j < Plosca.velikost; j++) {
-				Polje trenutnoPolje = plosca.polje[i][j];
-				if (trenutnoPolje.jePrazno()) {
-					Poteza poteza = new Poteza(plosca, igralec, trenutnoPolje);
+				if (plosca.polje[i][j] == Polje.PRAZNO) {
+					Poteza poteza = new Poteza(plosca, igralecNaPotezi, i, j);
 					if (poteza.jeVeljavna()) {
-						igralec.moznePoteze.add(poteza);
+						moznePoteze.add(poteza);
 					}
 				}
 			}
 		}
+		return moznePoteze;
 	}
 	
 	/**
@@ -167,9 +147,8 @@ public class Igra {
 	 * @param igralec
 	 * @return true, če ima igralec na razpolago vsaj eno veljavno potezo.
 	 */
-	public boolean obstajaPoteza(Plosca plosca, Igralec igralec){
-		veljavnePoteze(plosca, igralec);
-		return igralec.moznePoteze.size() != 0;
+	private boolean obstajaPoteza(Plosca plosca, Igralec igralec){
+		return veljavnePoteze().size() != 0;
 	}
 	
 	/**
@@ -178,14 +157,10 @@ public class Igra {
 	 * @param stolpec
 	 * @return poteza p: trenutno veljavna poteza, če obstaja; null sicer.
 	 */
-	public Poteza izberiPotezo(Igralec igralec, int vrstica, int stolpec) {
-		for (Poteza p : igralec.moznePoteze) {
-			System.out.print(p.polje.vrstica + " ");
-			System.out.println(p.polje.stolpec);
+	private Poteza izberiPotezo(int vrstica, int stolpec) {
+		for (Poteza p : veljavnePoteze()) {
 			
-			assert(p.igralec == igralec);
-			
-			if (p.polje.vrstica == vrstica && p.polje.stolpec == stolpec) {
+			if (p.vrstica == vrstica && p.stolpec == stolpec) {
 				return p;
 			}
 		}
@@ -197,9 +172,9 @@ public class Igra {
 	 * Metoda najprej preveri, ali je kateri od igralcev slučajno zmagal, sicer vrne kdo je na potezi.
 	 * POMEMBNO: Metoda tudi zamenja igralca na potezi (zato tega ni treba delati ročno)!
 	 */
-	public Stanje stanje() {
-		if (Igralec.BLACK.zaporedneNeveljavne == 2 || Igralec.WHITE.zaporedneNeveljavne == 2) {
-			int [] rezultat = prestejPoBarvah(plosca);
+	private Stanje stanje() {
+		if (this.zaporedneNeveljavne >= 2) {
+			int [] rezultat = this.plosca.prestejPoBarvah();
 			if (rezultat[0] == rezultat[1]) return Stanje.NEODLOCENO;
 			else return (rezultat[0] < rezultat[1] ? Stanje.ZMAGA_WHITE : Stanje.ZMAGA_BLACK);	
 		} else {
