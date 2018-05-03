@@ -1,4 +1,4 @@
-package Logika;
+package logika;
 
 import java.util.HashSet;
 import java.util.Scanner;

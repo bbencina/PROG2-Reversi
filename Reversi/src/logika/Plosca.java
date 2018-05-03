@@ -1,4 +1,4 @@
-package Logika;
+package logika;
 
 public class Plosca {
 	
@@ -30,7 +30,7 @@ public class Plosca {
 	 * @param plosca
 	 * @return par števil, prvo je število črnih in drugo število belih ploščkov na podani plošči.
 	 */
-	protected int[] prestejPoBarvah() {
+	public int[] prestejPoBarvah() {
 		int[] steviloPlosckov = new int[2];
 		
 		int black = 0, white = 0;

@@ -1,4 +1,4 @@
-package Logika;
+package logika;
 
 public enum Polje {
 	BLACK,
