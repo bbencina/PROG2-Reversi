@@ -3,6 +3,7 @@ package test;
 import junit.framework.TestCase;
 import logika.Igra;
 import logika.Igralec;
+import logika.Plosca;
 import logika.Stanje;
 import logika.Poteza;
 import java.util.ArrayList;
@@ -16,11 +17,12 @@ public class TestIgra extends TestCase {
 		
 		Stanje stanje;
 		
+		boolean konecIgre = false;
+		
 		// Na začetku je na potezi črni
 		assertEquals(igra.igralecNaPotezi, Igralec.BLACK);
-		assertEquals(igra.plosca.prestejPoBarvah()[0], igra.plosca.prestejPoBarvah()[1]);
 		
-		while(true) {
+		while(! konecIgre) {
 			Igralec igralec1 = igra.igralecNaPotezi;
 			if(igra.obstajaPoteza()) {
 				//Preuredimo množico možnih potez v seznam in izeberemo prvo potezo
@@ -42,6 +44,9 @@ public class TestIgra extends TestCase {
 			
 			//Če ni več veljavnih potez
 			else {
+				//preverimo, da število ploščkov ne preseže velikost plošče
+				assertTrue(igra.plosca.prestejPoBarvah()[0] + igra.plosca.prestejPoBarvah()[1] <= Plosca.velikost * Plosca.velikost);
+				
 				int plosckiCrni = igra.plosca.prestejPoBarvah()[0];
 				int plosckiBeli = igra.plosca.prestejPoBarvah()[1];
 				
@@ -49,8 +54,10 @@ public class TestIgra extends TestCase {
 				if (plosckiCrni == plosckiBeli) assertEquals(stanje, Stanje.NEODLOCENO);
 				else if(plosckiCrni < plosckiBeli) assertEquals(stanje, Stanje.ZMAGA_WHITE);
 				else if(plosckiCrni > plosckiBeli) assertEquals(stanje, Stanje.ZMAGA_BLACK);
+				
+				konecIgre = true;
 			}
 		}
 	}
-
+	
 }

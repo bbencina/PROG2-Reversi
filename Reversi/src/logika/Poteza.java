@@ -5,10 +5,11 @@ import java.util.HashSet;
 public class Poteza {
 	
 	public Igralec igralec;
-	protected int vrstica, stolpec;
+	public int vrstica, stolpec;
 	public Plosca plosca;
 	
-	private HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
+	// Moralo bi pisati private, a potrubujem public za jUnit teste.
+	public HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
 	
 	private static Smer[] smer;
 	
@@ -63,7 +64,7 @@ public class Poteza {
 	/**
 	 * Preveri veljavnost poteze in nastavi ugodne smeri, če obstajajo.
 	 */
-	protected boolean jeVeljavna(){
+	public boolean jeVeljavna(){
 		boolean successFlag = false;
 		
 		int vrstica = this.vrstica, stolpec = this.stolpec;
@@ -94,8 +95,12 @@ public class Poteza {
 	
 	/**
 	 * @param smeri - sprejme ugodne smeri
-	 * Ta funkcija dejansko opravi potezo (obrača ploščke).
-	 * Kliče jo funkcija opraviPotezo.
+	 * Ta metoda dejansko opravi potezo (obrača ploščke).
+	 * Kliče jo metoda opraviPotezo.
+	 * 
+	 * Pomembno: ta metoda je striktno private, kliče se jo lahko samo iz
+	 * metode opraviPotezo in iz nikjer drugje. Če piše, da je public, je
+	 * to le v namene testov (če se da, najdi drugačen način).
 	 */
 	private void opraviSe(HashSet<Smer> smeri){
 		for (Smer s : smeri){
