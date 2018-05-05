@@ -52,7 +52,7 @@ public class Poteza {
 	 * Glavna metoda za opravljanje poteze. Preveri njeno veljavnost in jo v primeru, da je veljavna, tudi opravi.
 	 * Vrne true, če je bila poteza opravljena, false sicer.
 	 */
-	protected boolean opraviPotezo(){
+	public boolean opraviPotezo(){
 		if (this.jeVeljavna()){
 			this.opraviSe(this.ugodneSmeri);
 			return true;

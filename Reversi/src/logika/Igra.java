@@ -16,7 +16,7 @@ public class Igra {
 	 */
 	public Plosca plosca;
 	
-	private int zaporedneNeveljavne;
+	public int zaporedneNeveljavne;
 	
 	
 	public Igra() {
@@ -24,6 +24,7 @@ public class Igra {
 		zaporedneNeveljavne = 0;
 		
 		igralecNaPotezi = Igralec.BLACK;
+		
 	}
 	
 	
@@ -65,8 +66,9 @@ public class Igra {
 			System.out.print("\n");
 			
 			//preveri, ali za trenutnega igralca obstajajo poteze in hkrati nastavi možne poteze igralcu.
-			if (this.obstajaPoteza(plosca, igralecNaPotezi)) {
+			if (this.obstajaPoteza()) {
 				Poteza poteza = null;
+
 				Scanner in = new Scanner(System.in);
 				// Prebere katero od možnih potez bi igralec rad odigral...
 				// (Izbira poteze tu je le simbolična, kasneje se bo gledal klik na polje -> koordinate.)
@@ -79,6 +81,7 @@ public class Igra {
 					poteza = this.izberiPotezo(vrstica, stolpec);
 				}
 				in.reset();
+				
 				// ...jo opravi...
 				poteza.opraviPotezo();
 				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
@@ -126,7 +129,7 @@ public class Igra {
 	 * Kliče jo metoda obstajaPoteza.
 	 * Paziti je treba, da se ta metoda res pokliče, drugače bo zmeda.
 	 */
-	private HashSet<Poteza> veljavnePoteze() {
+	public HashSet<Poteza> veljavnePoteze() {
 		HashSet<Poteza> moznePoteze = new HashSet<Poteza>();
 		for (int i = 0; i < Plosca.velikost; i++) {
 			for (int j = 0; j < Plosca.velikost; j++) {
@@ -146,7 +149,7 @@ public class Igra {
 	 * @param igralec
 	 * @return true, če ima igralec na razpolago vsaj eno veljavno potezo.
 	 */
-	private boolean obstajaPoteza(Plosca plosca, Igralec igralec){
+	public boolean obstajaPoteza(){
 		return veljavnePoteze().size() != 0;
 	}
 	
@@ -171,7 +174,7 @@ public class Igra {
 	 * Metoda najprej preveri, ali je kateri od igralcev slučajno zmagal, sicer vrne kdo je na potezi.
 	 * POMEMBNO: Metoda tudi zamenja igralca na potezi (zato tega ni treba delati ročno)!
 	 */
-	private Stanje stanje() {
+	public Stanje stanje() {
 		if (this.zaporedneNeveljavne >= 2) {
 			int [] rezultat = this.plosca.prestejPoBarvah();
 			if (rezultat[0] == rezultat[1]) return Stanje.NEODLOCENO;
