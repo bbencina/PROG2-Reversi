@@ -34,7 +34,7 @@ public class TestPoteza extends TestCase {
 				if(igra.obstajaPoteza()) {
 					//Preuredimo množico možnih potez v seznam in izberemo naključno potezo (isto kot testIgra)
 					List<Poteza> izborPotez = new ArrayList<Poteza>(igra.veljavnePoteze());
-					Random r = new Random();
+					Random r = new Random(i);
 					Poteza poteza = izborPotez.get(r.nextInt(izborPotez.size()));
 					poteza.opraviPotezo();
 					igra.zaporedneNeveljavne = 0;
