@@ -14,7 +14,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logika.Igra;
+import logika.Poteza;
 
+@SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 
 	private IgralnoPolje polje;
@@ -112,12 +114,27 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		 
 	}
 	
+	public void igraj(Poteza p) {
+		 this.igra.igrajPotezo(p);
+		 this.osveziGUI();
+		 
+		 // Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
+		 switch (this.igra.stanjeIgre) {
+		 case NA_POTEZI_BLACK: break;
+		 case NA_POTEZI_WHITE: break;
+		 case ZMAGA_BLACK: break;
+		 case ZMAGA_WHITE: break;
+		 case NEODLOCENO: break;
+		 }
+		
+	}
+	
 	public void osveziGUI() {
 		if (igra == null) {
 			status.setText("Igra ni v teku.");
 		}
 		else {
-			switch(igra.stanje()) {
+			switch(this.igra.stanjeIgre) {
 			case NA_POTEZI_BLACK: status.setText("Na potezi je črni"); break;
 			case NA_POTEZI_WHITE: status.setText("Na potezi je beli"); break;
 			case ZMAGA_BLACK: status.setText("Zmagal je črni"); break;
@@ -126,6 +143,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			}
 		}
 		polje.repaint();
+	}
+	
+	public Igra kopijaIgre() {
+		return new Igra(this.igra);
 	}
 
 }

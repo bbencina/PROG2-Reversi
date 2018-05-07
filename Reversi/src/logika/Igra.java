@@ -16,6 +16,8 @@ public class Igra {
 	 */
 	public Plosca plosca;
 	
+	public Stanje stanjeIgre;
+	
 	public int zaporedneNeveljavne;
 	
 	
@@ -24,9 +26,40 @@ public class Igra {
 		zaporedneNeveljavne = 0;
 		
 		igralecNaPotezi = Igralec.BLACK;
+		stanjeIgre = Stanje.NA_POTEZI_BLACK;
 		
 	}
 	
+	public Igra(Igra igra) {
+		igralecNaPotezi = igra.igralecNaPotezi;
+		zaporedneNeveljavne = igra.zaporedneNeveljavne;
+		stanjeIgre = igra.stanjeIgre;
+		
+		plosca = new Plosca();
+		
+		for (int i = 0; i < Plosca.velikost; i++) {
+			for (int j = 0; j < Plosca.velikost; j++) {
+				plosca.polje[i][j] = igra.plosca.polje[i][j];
+			}
+		}
+	}
+	
+	public boolean igrajPotezo(Poteza p) {
+		if (!this.obstajaPoteza()) {
+			this.zaporedneNeveljavne++;
+			this.stanjeIgre = this.stanje();
+			return true;
+		}
+		if (this.veljavnePoteze().contains(p)) {
+			p.opraviPotezo();
+			this.zaporedneNeveljavne = 0;
+			this.stanjeIgre = this.stanje();
+			return true;
+		} else {
+			return false;
+			
+		}
+	}
 	
 	protected void igrajSe(){
 		// Začasne spremenljivke:
@@ -36,7 +69,6 @@ public class Igra {
 		/**
 		 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
 		 */
-		Stanje stanje;
 		while (true) {
 			/**
 			 * Vmesen blok, namenjen izpisovanju igre v konzolo.
@@ -87,15 +119,15 @@ public class Igra {
 				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
 				this.zaporedneNeveljavne = 0;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanje = this.stanje();
-				System.out.println(stanje);
+				stanjeIgre = this.stanje();
+				System.out.println(stanjeIgre);
 			}
 			else {
 				// Posodobi število neveljavnih in zamenja igralca.
 				this.zaporedneNeveljavne++;
 				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanje = this.stanje();
-				System.out.println(stanje);
+				stanjeIgre = this.stanje();
+				System.out.println(stanjeIgre);
 			}
 			
 			
@@ -107,13 +139,13 @@ public class Igra {
 			 * 
 			 * Ideja: namesto tipa void, lahko ta funkcija vrne stanje ob koncu igre.
 			 */
-			if (stanje == Stanje.NEODLOCENO) {
+			if (stanjeIgre == Stanje.NEODLOCENO) {
 				System.out.println("Igra je neodločena!");
 				return;
-			} else if (stanje == Stanje.ZMAGA_BLACK) {
+			} else if (stanjeIgre == Stanje.ZMAGA_BLACK) {
 				System.out.println("Zmagal je črni igralec!");
 				return;
-			} else if (stanje == Stanje.ZMAGA_WHITE) {
+			} else if (stanjeIgre == Stanje.ZMAGA_WHITE) {
 				System.out.println("Zmagal je beli igralec!");
 				return;
 			} else {
