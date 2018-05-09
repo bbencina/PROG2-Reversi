@@ -9,13 +9,13 @@ public class Igra {
 	 * Igralec trenutno na potezi.
 	 * (Zaradi konstantnega spreminjanja barv ploščkov se ne splača računati.)
 	 */
-	public Igralec igralecNaPotezi;
-	
+	private Igralec igralecNaPotezi;
+
 	/**
 	 * Plošča lastna tej igri.
 	 */
-	public Plosca plosca;
-	
+	private Plosca plosca;
+
 	public Stanje stanjeIgre;
 	
 	public int zaporedneNeveljavne;
@@ -42,6 +42,18 @@ public class Igra {
 				plosca.polje[i][j] = igra.plosca.polje[i][j];
 			}
 		}
+	}
+	
+	public Plosca getPlosca() {
+		return plosca;
+	}
+	
+	public Igralec getIgralecNaPotezi() {
+		return igralecNaPotezi;
+	}
+
+	public void setIgralecNaPotezi(Igralec igralec) {
+		this.igralecNaPotezi = igralec;
 	}
 	
 	public boolean igrajPotezo(Poteza p) {

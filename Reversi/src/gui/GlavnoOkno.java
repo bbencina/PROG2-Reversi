@@ -14,16 +14,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logika.Igra;
+import logika.Plosca;
 import logika.Poteza;
+import logika.Igralec;
 
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 
 	private IgralnoPolje polje;
+	private Igra igra = null;
+	
+	private Okupator okupatorBlack = null, okupatorWhite = null;
 	
 	private JLabel status;
-	
-	private Igra igra = null;
 	
 	private JMenuItem zapri_okno;
 	private JMenuItem dva_igralca;
@@ -86,13 +89,32 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		status_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, status_layout);
 		
-		// poženemo novo igro
-		// privzeta igra bo igralec proti računalniku, igralec bo prvi na potezi
-		
-		// tukaj samo začasno
-		osveziGUI();
+		/**
+		 * Privzeto je, da sta oba igralca cloveka.
+		 */
+		nova_igra(true, true);
 	}
 	
+	public void nova_igra(boolean clovekBlack, boolean clovekWhite) {
+		if (okupatorBlack != null) okupatorBlack.prekini();
+		if (okupatorWhite != null) okupatorWhite.prekini();
+		
+		this.igra = new Igra();
+		
+		if (clovekBlack && clovekWhite){
+			okupatorBlack = new Clovek(this);
+			okupatorWhite = new Clovek(this);
+		}
+		
+		switch (igra.stanjeIgre){
+		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
+		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
+		default: break;
+		}
+		
+		osveziGUI();
+		polje.repaint();
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -120,8 +142,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		 
 		 // Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
 		 switch (this.igra.stanjeIgre) {
-		 case NA_POTEZI_BLACK: break;
-		 case NA_POTEZI_WHITE: break;
+		 case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
+		 case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
 		 case ZMAGA_BLACK: break;
 		 case ZMAGA_WHITE: break;
 		 case NEODLOCENO: break;
@@ -145,8 +167,30 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje.repaint();
 	}
 	
+	public void klikniPolje(int i, int j){
+		if (igra != null) {
+			switch (igra.stanjeIgre){
+			case NA_POTEZI_BLACK:
+				okupatorBlack.klik(i, j);
+				break;
+			case NA_POTEZI_WHITE:
+				okupatorWhite.klik(i, j);
+				break;
+			default: break;
+			}
+		}
+	}
+	
 	public Igra kopijaIgre() {
 		return new Igra(this.igra);
+	}
+	
+	public Plosca getPlosca() {
+		return (igra == null ? null : igra.getPlosca());
+	}
+	
+	public Igralec getIgralec() {
+		return (igra == null ? null : igra.getIgralecNaPotezi());
 	}
 
 }

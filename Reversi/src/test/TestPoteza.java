@@ -43,7 +43,7 @@ public class TestPoteza extends TestCase {
 				}
 				
 				// ploscam za testiranje dodamo trenutno ploščo
-				plosce.add(igra.plosca);
+				plosce.add(igra.getPlosca());
 				
 				// za razliko od testIgra, tukaj potrebujemo le, da se igra konča, ne pa dejanskega stanja
 				if (igra.zaporedneNeveljavne >= 2) {

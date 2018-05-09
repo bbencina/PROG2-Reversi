@@ -26,10 +26,10 @@ public class TestIgra extends TestCase {
 			boolean konecIgre = false;
 			
 			// Na začetku je na potezi črni
-			assertEquals(igra.igralecNaPotezi, Igralec.BLACK);
+			assertEquals(igra.getIgralecNaPotezi(), Igralec.BLACK);
 			
 			while(! konecIgre) {
-				Igralec igralec1 = igra.igralecNaPotezi;
+				Igralec igralec1 = igra.getIgralecNaPotezi();
 				if(igra.obstajaPoteza()) {
 					//Preuredimo množico možnih potez v seznam in izberemo naključno potezo
 					List<Poteza> izborPotez = new ArrayList<Poteza>(igra.veljavnePoteze());
@@ -44,7 +44,7 @@ public class TestIgra extends TestCase {
 				
 				if (igra.zaporedneNeveljavne < 2) {
 					//Preverimo, da se je igralec na potezi zamenjal
-					assertTrue(igralec1 != igra.igralecNaPotezi);
+					assertTrue(igralec1 != igra.getIgralecNaPotezi());
 					//Preverimo, da je kdo na potezi
 					assertTrue(stanje == Stanje.NA_POTEZI_BLACK | stanje == Stanje.NA_POTEZI_WHITE);
 				} 
@@ -52,8 +52,8 @@ public class TestIgra extends TestCase {
 				//Če ni več veljavnih potez
 				else {
 					
-					int plosckiCrni = igra.plosca.prestejPoBarvah()[0];
-					int plosckiBeli = igra.plosca.prestejPoBarvah()[1];
+					int plosckiCrni = igra.getPlosca().prestejPoBarvah()[0];
+					int plosckiBeli = igra.getPlosca().prestejPoBarvah()[1];
 					
 					//preverimo, da število ploščkov ne preseže velikost plošče
 					assertTrue(plosckiCrni + plosckiBeli <= Plosca.velikost * Plosca.velikost);
