@@ -49,9 +49,9 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		double robY = dim * (stolpec + 0.5 * DEBELINA_CRTE + PADDING);
 		g.setColor(c);
 		g.drawOval((int)(robX + ZAMIK_X), (int)(robY + ZAMIK_Y),
-					(int)premer, (int)premer);
+				   (int)premer, (int)premer);
 		g.fillOval((int)(robX + ZAMIK_X), (int)(robY + ZAMIK_Y),
-				(int)premer, (int)premer);
+				   (int)premer, (int)premer);
 	}
 	
 	
@@ -61,7 +61,7 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		Graphics2D g = (Graphics2D) arg_g;
 		double dim = this.stranicaPolja();
 		
-		// risanje èrt
+		// risanje ï¿½rt
 		g.setColor(barvaCrte);
 		g.setStroke(new BasicStroke((float) (dim * DEBELINA_CRTE)));
 		for (int i = 0; i <= Plosca.velikost; i++){
@@ -75,7 +75,7 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 				    (int)(i * dim + ZAMIK_Y));
 		}
 		
-		// risanje plošèkov
+		// risanje ploï¿½ï¿½kov
 		Plosca plosca = master.getPlosca();
 		if (plosca != null) {
 			for (int i = 0; i < Plosca.velikost; i++){
@@ -100,9 +100,9 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		double dj = (x % dim) / this.stranicaPolja();
 		
 		if (0 <= i && i < Plosca.velikost &&
-			    0.5 * DEBELINA_CRTE < di && di < 1.0 - 0.5 * DEBELINA_CRTE &&
-			    0 <= j && j < Plosca.velikost && 
-			    0.5 * DEBELINA_CRTE < dj && dj < 1.0 - 0.5 * DEBELINA_CRTE) {
+			0.5 * DEBELINA_CRTE < di && di < 1.0 - 0.5 * DEBELINA_CRTE &&
+			0 <= j && j < Plosca.velikost && 
+			0.5 * DEBELINA_CRTE < dj && dj < 1.0 - 0.5 * DEBELINA_CRTE) {
 				master.klikniPolje(i, j);
 		}
 	}

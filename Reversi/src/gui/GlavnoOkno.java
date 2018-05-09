@@ -15,7 +15,9 @@ import javax.swing.JMenuItem;
 
 import logika.Igra;
 import logika.Plosca;
+import logika.Polje;
 import logika.Poteza;
+import logika.Stanje;
 import logika.Igralec;
 
 @SuppressWarnings("serial")
@@ -123,7 +125,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		}
 		
 		else if(e.getSource() == dva_igralca) {
-			 // začnemo igro za dva igralca
+			// začnemo igro za dva igralca
+			nova_igra(true, true);
 		}
 		
 		else if(e.getSource() == igralec_crni) {
@@ -137,18 +140,17 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	}
 	
 	public void igraj(Poteza p) {
-		 this.igra.igrajPotezo(p);
-		 this.osveziGUI();
+		this.igra.igrajPotezo(p);
+		this.osveziGUI();
 		 
-		 // Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
-		 switch (this.igra.stanjeIgre) {
-		 case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
-		 case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
-		 case ZMAGA_BLACK: break;
-		 case ZMAGA_WHITE: break;
-		 case NEODLOCENO: break;
-		 }
-		
+		// Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
+		switch (this.igra.stanjeIgre) {
+		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
+		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
+		case ZMAGA_BLACK: break;
+		case ZMAGA_WHITE: break;
+		case NEODLOCENO: break;
+		}
 	}
 	
 	public void osveziGUI() {
