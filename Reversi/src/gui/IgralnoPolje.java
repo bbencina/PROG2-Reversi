@@ -61,7 +61,7 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		Graphics2D g = (Graphics2D) arg_g;
 		double dim = this.stranicaPolja();
 		
-		// risanje �rt
+		// risanje črt
 		g.setColor(barvaCrte);
 		g.setStroke(new BasicStroke((float) (dim * DEBELINA_CRTE)));
 		for (int i = 0; i <= Plosca.velikost; i++){
@@ -75,7 +75,7 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 				    (int)(i * dim + ZAMIK_Y));
 		}
 		
-		// risanje plo��kov
+		// risanje ploščkov
 		Plosca plosca = master.getPlosca();
 		if (plosca != null) {
 			for (int i = 0; i < Plosca.velikost; i++){

@@ -2,15 +2,15 @@ package gui;
 
 public abstract class Okupator {
 	/**
-	 * Metoda, ki jo klièe glavno okno, da igralec zaène potezo.
-	 * (Pri èloveku prazna, raèunalnik pa tu misli.)
+	 * Metoda, ki jo kliÄe glavno okno, da igralec zaÄne potezo.
+	 * (Pri Äloveku prazna, raÄunalnik pa tu misli.)
 	 */
 	public abstract void zacni_potezo();
 	
 	/**
-	 * Metoda se klièe, ko je treba iz katerega koli razloga
-	 * predèasno prekiniti potezo igralca ( npr. zaèetek nove igre)
-	 * (Pri èloveku prazna.)
+	 * Metoda se kliÄe, ko je treba iz katerega koli razloga
+	 * predÄasno prekiniti potezo igralca ( npr. zaÄetek nove igre)
+	 * (Pri Äloveku prazna.)
 	 */
 	public abstract void prekini();
 	
@@ -18,7 +18,7 @@ public abstract class Okupator {
 	 * @param i - vrstica klika
 	 * @param j - stolpec klika
 	 * 
-	 * Metoda se klièe, ko uporabnik pritisne na miško;
+	 * Metoda se kliÄe, ko uporabnik pritisne na miÅ¡ko;
 	 * glej IgralnoPolje.mouseClicked.
 	 */
 	public abstract void klik(int i, int j);
