@@ -45,8 +45,8 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 							int vrstica, int stolpec) {
 		double dim = this.stranicaPolja();
 		double premer = dim * (1.0 - DEBELINA_CRTE - 2.0 * PADDING);
-		double robX = dim * (vrstica + 0.5 * DEBELINA_CRTE + PADDING);
-		double robY = dim * (stolpec + 0.5 * DEBELINA_CRTE + PADDING);
+		double robY = dim * (vrstica + 0.5 * DEBELINA_CRTE + PADDING);
+		double robX = dim * (stolpec + 0.5 * DEBELINA_CRTE + PADDING);
 		g.setColor(c);
 		g.drawOval((int)(robX + ZAMIK_X), (int)(robY + ZAMIK_Y),
 				   (int)premer, (int)premer);
@@ -92,12 +92,15 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
+		System.out.println("Clicked!");
 		int x = event.getX(), y = event.getY();
 		int dim = (int) this.stranicaPolja();
 		int i = (y - ZAMIK_Y) / dim;
 		double di = (y % dim) / this.stranicaPolja();
 		int j = (x - ZAMIK_X) / dim;
 		double dj = (x % dim) / this.stranicaPolja();
+		
+		System.out.println("" + i + " " + j);
 		
 		if (0 <= i && i < Plosca.velikost &&
 			0.5 * DEBELINA_CRTE < di && di < 1.0 - 0.5 * DEBELINA_CRTE &&

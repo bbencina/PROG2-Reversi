@@ -57,20 +57,24 @@ public class Igra {
 	}
 	
 	public boolean igrajPotezo(Poteza p) {
+		System.out.println("Poteza je v logika/Igra");
 		if (!this.obstajaPoteza()) {
+			System.out.println("Ne obstaja poteza...");
 			this.zaporedneNeveljavne++;
 			this.stanjeIgre = this.stanje();
 			return true;
 		}
-		if (this.veljavnePoteze().contains(p)) {
-			p.opraviPotezo();
-			this.zaporedneNeveljavne = 0;
-			this.stanjeIgre = this.stanje();
-			return true;
-		} else {
-			return false;
-			
+		for (Poteza veljavnaP : this.veljavnePoteze()) {
+			if (veljavnaP.jeEnaka(p)) {
+				System.out.println("Poteza se bo izvedla...");
+				p.opraviPotezo();
+				this.zaporedneNeveljavne = 0;
+				this.stanjeIgre = this.stanje();
+				return true;
+			}
 		}
+		System.out.println("igrajPotezo vrača false..");
+		return false;
 	}
 	
 	protected void igrajSe(){

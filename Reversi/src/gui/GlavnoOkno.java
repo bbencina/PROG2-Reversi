@@ -140,6 +140,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	}
 	
 	public void igraj(Poteza p) {
+		System.out.println("Sedaj se bo igrala poteza...");
 		this.igra.igrajPotezo(p);
 		this.osveziGUI();
 		 
@@ -170,6 +171,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	}
 	
 	public void klikniPolje(int i, int j){
+		System.out.println("Klik je prišel do okna...");
 		if (igra != null) {
 			switch (igra.stanjeIgre){
 			case NA_POTEZI_BLACK:
