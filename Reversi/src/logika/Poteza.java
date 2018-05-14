@@ -11,9 +11,9 @@ public class Poteza {
 	// Moralo bi pisati private, a potrubujem public za jUnit teste.
 	public HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
 	
-	private static Smer[] smer;
+	private static final Smer[] smer;
 	
-	{
+	static {
 		/**
 		 * Nastavi seznam možnih smeri za kasnejše lažje preverjanje.
 		 * Smeri je vedno (neodvisno od velikosti plošče) 8.

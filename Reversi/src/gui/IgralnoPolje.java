@@ -96,9 +96,9 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		int x = event.getX(), y = event.getY();
 		int dim = (int) this.stranicaPolja();
 		int i = (y - ZAMIK_Y) / dim;
-		double di = (y % dim) / this.stranicaPolja();
+		double di = ((y - ZAMIK_Y) % dim) / this.stranicaPolja();
 		int j = (x - ZAMIK_X) / dim;
-		double dj = (x % dim) / this.stranicaPolja();
+		double dj = ((x - ZAMIK_X) % dim) / this.stranicaPolja();
 		
 		System.out.println("" + i + " " + j);
 		
