@@ -106,7 +106,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			okupatorWhite = new Clovek(this);
 		}
 		
-		switch (igra.stanjeIgre){
+		switch (igra.stanje()){
 		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
 		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
 		default: break;
@@ -143,7 +143,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		this.osveziGUI();
 		 
 		// Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
-		switch (this.igra.stanjeIgre) {
+		switch (this.igra.stanje()) {
 		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
 		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
 		case ZMAGA_BLACK: break;
@@ -157,7 +157,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			status.setText("Igra ni v teku.");
 		}
 		else {
-			switch(this.igra.stanjeIgre) {
+			switch(this.igra.stanje()) {
 			case NA_POTEZI_BLACK: status.setText("Na potezi je črni"); break;
 			case NA_POTEZI_WHITE: status.setText("Na potezi je beli"); break;
 			case ZMAGA_BLACK: status.setText("Zmagal je črni"); break;
@@ -171,7 +171,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	public void klikniPolje(int i, int j){
 		System.out.println("Klik je prišel do okna...");
 		if (igra != null) {
-			switch (igra.stanjeIgre){
+			switch (igra.stanje()){
 			case NA_POTEZI_BLACK:
 				okupatorBlack.klik(i, j);
 				break;

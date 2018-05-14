@@ -14,10 +14,6 @@ public class Igra {
 	 * Plošča lastna tej igri.
 	 */
 	private Plosca plosca;
-
-	public Stanje stanjeIgre;
-	
-	public int zaporedneNeveljavne;
 	
 	
 	// Moralo bi pisati private, a potrubujem public za jUnit teste.
@@ -51,17 +47,13 @@ public class Igra {
 	
 	public Igra() {
 		plosca = new Plosca();
-		zaporedneNeveljavne = 0;
 		
 		igralecNaPotezi = Igralec.BLACK;
-		stanjeIgre = Stanje.NA_POTEZI_BLACK;
 		
 	}
 	
 	public Igra(Igra igra) {
 		igralecNaPotezi = igra.igralecNaPotezi;
-		zaporedneNeveljavne = igra.zaporedneNeveljavne;
-		stanjeIgre = igra.stanjeIgre;
 		
 		plosca = new Plosca();
 		
@@ -82,25 +74,10 @@ public class Igra {
 	
 	public boolean igrajPotezo(Poteza p) {
 		System.out.println("Poteza je v logika/Igra");
-		if (!this.obstajaPoteza()) {
-			System.out.println("Ne obstaja poteza...");
-			this.zaporedneNeveljavne++;
-			this.stanjeIgre = this.stanje();
-			return true;
-		}
-		if (jeVeljavna(p)) {
+		if (jeVeljavna(p, true)) {
 			System.out.println("Poteza se bo izvedla...");
 			opraviPotezo(p);
-			this.zaporedneNeveljavne = 0;
-			this.stanjeIgre = this.stanje();
-			if(!this.obstajaPoteza()){
-				this.zaporedneNeveljavne++;
-				this.stanjeIgre = this.stanje();
-				if(!this.obstajaPoteza()){
-					this.zaporedneNeveljavne++;
-					this.stanjeIgre = this.stanje();
-				}
-			}
+			igralecNaPotezi = igralecNaPotezi.naslednji();
 			return true;
 		}
 		System.out.println("igrajPotezo vrača false..");
@@ -118,7 +95,7 @@ public class Igra {
 			for (int j = 0; j < Plosca.velikost; j++) {
 				if (plosca.polje[i][j] == Polje.PRAZNO) {
 					Poteza poteza = new Poteza(i, j);
-					if (jeVeljavna(poteza)) {
+					if (jeVeljavna(poteza, false)) {
 						moznePoteze.add(poteza);
 					}
 				}
@@ -136,27 +113,40 @@ public class Igra {
 		return veljavnePoteze().size() != 0;
 	}
 	
+	public HashSet<Poteza> potezeIgralca(Igralec igralec) {
+		HashSet<Poteza> poteze = new HashSet<Poteza>();
+		if (igralec == this.igralecNaPotezi) {
+			poteze = veljavnePoteze();
+		} else {
+			// Začasno spremenimo igralca na potezi
+			igralecNaPotezi = igralec;
+			poteze = veljavnePoteze();
+			// Spremenimo ga takoj nazaj, preden stanje to izve.
+			igralecNaPotezi = igralec.naslednji();
+		}
+		return poteze;
+	}
+	
 	/**
 	 * @return trenutno stanje igre
 	 * Metoda najprej preveri, ali je kateri od igralcev slučajno zmagal, sicer vrne kdo je na potezi.
 	 * POMEMBNO: Metoda tudi zamenja igralca na potezi (zato tega ni treba delati ročno)!
 	 */
 	public Stanje stanje() {
-		if (this.zaporedneNeveljavne >= 2) {
+		if (potezeIgralca(igralecNaPotezi).isEmpty()
+			&& potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 			int [] rezultat = this.plosca.prestejPoBarvah();
 			if (rezultat[0] == rezultat[1]) return Stanje.NEODLOCENO;
 			else return (rezultat[0] < rezultat[1] ? Stanje.ZMAGA_WHITE : Stanje.ZMAGA_BLACK);	
-		} else {
-			igralecNaPotezi = igralecNaPotezi.naslednji();
-			return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 		}
+		return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 	}
 
 	
 	/**
 	 * Preveri veljavnost poteze in nastavi ugodne smeri, če obstajajo.
 	 */
-	public boolean jeVeljavna(Poteza p){
+	public boolean jeVeljavna(Poteza p, boolean polniUgodne){
 		boolean successFlag = false;
 		
 		int vrstica = p.vrstica, stolpec = p.stolpec;
@@ -174,7 +164,10 @@ public class Igra {
 				} else if (this.plosca.polje[vrstica][stolpec] == this.igralecNaPotezi.barva() && koef == 1){
 					break;
 				} else if (koef > 1 && this.plosca.polje[vrstica][stolpec] == this.igralecNaPotezi.barva()){
-					ugodneSmeri.add(s);
+					if (polniUgodne) {
+						System.out.println("Polnim ugodne smeri..");
+						ugodneSmeri.add(s);
+						}
 					successFlag = true;
 					break;
 				}
@@ -188,11 +181,8 @@ public class Igra {
 	/**
 	 * @param smeri - sprejme ugodne smeri
 	 * Ta metoda dejansko opravi potezo (obrača ploščke).
-	 * Kliče jo metoda opraviPotezo.
 	 * 
-	 * Pomembno: ta metoda je striktno private, kliče se jo lahko samo iz
-	 * metode opraviPotezo in iz nikjer drugje. Če piše, da je public, je
-	 * to le v namene testov (če se da, najdi drugačen način).
+	 * Pomembno: ta metoda je striktno private.
 	 */
 	private void opraviPotezo(Poteza p){
 		for (Smer s : ugodneSmeri){
@@ -214,6 +204,7 @@ public class Igra {
 				koef++;
 			}
 		}
+		System.out.println("Brišem ugodne smeri..");
 		this.ugodneSmeri.clear();
 	}
 }
