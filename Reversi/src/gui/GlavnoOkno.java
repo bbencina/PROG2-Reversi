@@ -15,9 +15,7 @@ import javax.swing.JMenuItem;
 
 import logika.Igra;
 import logika.Plosca;
-import logika.Polje;
 import logika.Poteza;
-import logika.Stanje;
 import logika.Igralec;
 
 @SuppressWarnings("serial")
