@@ -51,10 +51,6 @@ public class Igra {
 	public Igralec getIgralecNaPotezi() {
 		return igralecNaPotezi;
 	}
-
-	public void setIgralecNaPotezi(Igralec igralec) {
-		this.igralecNaPotezi = igralec;
-	}
 	
 	public boolean igrajPotezo(Poteza p) {
 		System.out.println("Poteza je v logika/Igra");
