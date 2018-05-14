@@ -77,7 +77,9 @@ public class Igra {
 		if (jeVeljavna(p, true)) {
 			System.out.println("Poteza se bo izvedla...");
 			opraviPotezo(p);
-			igralecNaPotezi = igralecNaPotezi.naslednji();
+			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
+				igralecNaPotezi = igralecNaPotezi.naslednji();
+			}
 			return true;
 		}
 		System.out.println("igrajPotezo vrača false..");
@@ -105,14 +107,9 @@ public class Igra {
 	}
 	
 	/**
-	 * @param plosca
 	 * @param igralec
-	 * @return true, če ima igralec na razpolago vsaj eno veljavno potezo.
+	 * @return množico potez, ki jih ima dani igralec na voljo
 	 */
-	public boolean obstajaPoteza(){
-		return veljavnePoteze().size() != 0;
-	}
-	
 	public HashSet<Poteza> potezeIgralca(Igralec igralec) {
 		HashSet<Poteza> poteze = new HashSet<Poteza>();
 		if (igralec == this.igralecNaPotezi) {
