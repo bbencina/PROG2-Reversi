@@ -1,7 +1,6 @@
 package logika;
 
 import java.util.HashSet;
-import java.util.Scanner;
 
 public class Igra {
 	
@@ -60,118 +59,23 @@ public class Igra {
 			this.stanjeIgre = this.stanje();
 			return true;
 		}
-		for (Poteza veljavnaP : this.veljavnePoteze()) {
-			if (veljavnaP.jeEnaka(p)) {
-				System.out.println("Poteza se bo izvedla...");
-				p.opraviPotezo();
-				this.zaporedneNeveljavne = 0;
+		if (p.jeVeljavna()) {
+			System.out.println("Poteza se bo izvedla...");
+			p.opraviPotezo();
+			this.zaporedneNeveljavne = 0;
+			this.stanjeIgre = this.stanje();
+			if(!this.obstajaPoteza()){
+				this.zaporedneNeveljavne++;
 				this.stanjeIgre = this.stanje();
 				if(!this.obstajaPoteza()){
 					this.zaporedneNeveljavne++;
 					this.stanjeIgre = this.stanje();
-					if(!this.obstajaPoteza()){
-						this.zaporedneNeveljavne++;
-						this.stanjeIgre = this.stanje();
-					}
 				}
-				return true;
 			}
+			return true;
 		}
 		System.out.println("igrajPotezo vrača false..");
 		return false;
-	}
-	
-	protected void igrajSe(){
-		// Začasne spremenljivke:
-		int zaporednaPoteza = 0;
-		
-		
-		/**
-		 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
-		 */
-		while (true) {
-			/**
-			 * Vmesen blok, namenjen izpisovanju igre v konzolo.
-			 */
-			for (int i = 0; i < Plosca.velikost; i++) {
-				System.out.print("*");
-			}
-			System.out.print("\n");
-			
-			System.out.println("Zaporedna poteza: " + zaporednaPoteza);
-			zaporednaPoteza++;
-			
-			System.out.print("Igralec na potezi: ");
-			if (igralecNaPotezi == Igralec.BLACK) {
-				System.out.println("BLACK");
-			} else if (igralecNaPotezi == Igralec.WHITE) {
-				System.out.println("WHITE");
-			} else {
-				System.out.println("PLAYER_ERROR");
-			}
-			
-			this.plosca.izpisiSe();
-			
-			for (int i = 0; i < Plosca.velikost; i++) {
-				System.out.print("*");
-			}
-			System.out.print("\n");
-			
-			//preveri, ali za trenutnega igralca obstajajo poteze in hkrati nastavi možne poteze igralcu.
-			if (this.obstajaPoteza()) {
-				Poteza poteza = null;
-
-				Scanner in = new Scanner(System.in);
-				// Prebere katero od možnih potez bi igralec rad odigral...
-				// (Izbira poteze tu je le simbolična, kasneje se bo gledal klik na polje -> koordinate.)
-				while (poteza == null) {
-					int vrstica, stolpec;
-					System.out.println("Vnesi vrstico: ");
-					vrstica = in.nextInt();
-					System.out.println("Vnesi stolpec: ");
-					stolpec = in.nextInt();
-					poteza = this.izberiPotezo(vrstica, stolpec);
-				}
-				in.reset();
-				
-				// ...jo opravi...
-				poteza.opraviPotezo();
-				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
-				this.zaporedneNeveljavne = 0;
-				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanjeIgre = this.stanje();
-				System.out.println(stanjeIgre);
-			}
-			else {
-				// Posodobi število neveljavnih in zamenja igralca.
-				this.zaporedneNeveljavne++;
-				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanjeIgre = this.stanje();
-				System.out.println(stanjeIgre);
-			}
-			
-			
-			
-			/**
-			 * Blok, ki po opravljeni potezi obravnava stanje igre.
-			 * System.out klici so le placeholderji; razmisliti bo treba, na kakšen način razglasiti zmagovalca,
-			 * da bo uporabniški vmesnik lahko to prebral.
-			 * 
-			 * Ideja: namesto tipa void, lahko ta funkcija vrne stanje ob koncu igre.
-			 */
-			if (stanjeIgre == Stanje.NEODLOCENO) {
-				System.out.println("Igra je neodločena!");
-				return;
-			} else if (stanjeIgre == Stanje.ZMAGA_BLACK) {
-				System.out.println("Zmagal je črni igralec!");
-				return;
-			} else if (stanjeIgre == Stanje.ZMAGA_WHITE) {
-				System.out.println("Zmagal je beli igralec!");
-				return;
-			} else {
-				continue;
-			}
-		}
 	}
 	
 	/**
@@ -205,21 +109,7 @@ public class Igra {
 		return veljavnePoteze().size() != 0;
 	}
 	
-	/**
-	 * @param igralec
-	 * @param vrstica
-	 * @param stolpec
-	 * @return poteza p: trenutno veljavna poteza, če obstaja; null sicer.
-	 */
-	private Poteza izberiPotezo(int vrstica, int stolpec) {
-		for (Poteza p : veljavnePoteze()) {
-			
-			if (p.vrstica == vrstica && p.stolpec == stolpec) {
-				return p;
-			}
-		}
-		return null;
-	}
+
 	
 	/**
 	 * @return trenutno stanje igre

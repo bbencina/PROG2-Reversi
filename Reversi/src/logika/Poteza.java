@@ -47,11 +47,6 @@ public class Poteza {
 		this.stolpec = stolpec;
 		this.plosca = plosca;
 	}
-	
-	public boolean jeEnaka(Poteza p) {
-		return (this.vrstica == p.vrstica && this.stolpec == p.stolpec);
-	}
-	
 
 	/**
 	 * Glavna metoda za opravljanje poteze. Preveri njeno veljavnost in jo v primeru, da je veljavna, tudi opravi.
