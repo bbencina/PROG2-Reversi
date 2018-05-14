@@ -19,10 +19,7 @@ public class Clovek extends Okupator {
 
 	@Override
 	public void klik(int i, int j) {
-		System.out.println("Klik je prišel do igralca!");
-		master.igraj(new Poteza(master.getPlosca(),
-								master.getIgralec(),
-								i, j));
+		master.igraj(new Poteza(i, j));
 	}
 	
 }

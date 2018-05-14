@@ -1,7 +1,7 @@
 package logika;
 
 import java.util.HashSet;
-import java.util.Scanner;
+import java.util.LinkedList;
 
 public class Igra {
 	
@@ -15,25 +15,46 @@ public class Igra {
 	 * Plošča lastna tej igri.
 	 */
 	private Plosca plosca;
-
-	public Stanje stanjeIgre;
 	
-	public int zaporedneNeveljavne;
+	
+	// Moralo bi pisati private, a potrebujem public za jUnit teste.
+	public HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
+	
+	private static final Smer[] smer;
+	
+	static {
+		/**
+		 * Nastavi seznam možnih smeri za kasnejše lažje preverjanje.
+		 * Smeri je vedno (neodvisno od velikosti plošče) 8.
+		 * Pogoj v zankah služi temu, da odpravi nesmiselno deveto smer, kjer se nikamor ne premaknemo.
+		 * Nesmiselne smeri v odvisnosti od polja (vogal, rob, ena stran od roba) bo urejala funkcija jeVeljavna.
+		 */
+		int[] ds = {-1, 0, 1};
+		smer = new Smer[8];
+		int counter = 0;
+		
+		for (int dx : ds) {
+			for (int dy : ds) {
+				if (dx == 0 && dy == 0) {
+					continue;
+				} else {
+					smer[counter] = new Smer(dx, dy);
+					counter++;
+				}
+			}
+		}
+	}
 	
 	
 	public Igra() {
 		plosca = new Plosca();
-		zaporedneNeveljavne = 0;
 		
 		igralecNaPotezi = Igralec.BLACK;
-		stanjeIgre = Stanje.NA_POTEZI_BLACK;
 		
 	}
 	
 	public Igra(Igra igra) {
 		igralecNaPotezi = igra.igralecNaPotezi;
-		zaporedneNeveljavne = igra.zaporedneNeveljavne;
-		stanjeIgre = igra.stanjeIgre;
 		
 		plosca = new Plosca();
 		
@@ -51,147 +72,30 @@ public class Igra {
 	public Igralec getIgralecNaPotezi() {
 		return igralecNaPotezi;
 	}
-
-	public void setIgralecNaPotezi(Igralec igralec) {
-		this.igralecNaPotezi = igralec;
-	}
 	
 	public boolean igrajPotezo(Poteza p) {
-		System.out.println("Poteza je v logika/Igra");
-		if (!this.obstajaPoteza()) {
-			System.out.println("Ne obstaja poteza...");
-			this.zaporedneNeveljavne++;
-			this.stanjeIgre = this.stanje();
+		if (jeVeljavna(p, true)) {
+			opraviPotezo(p);
+			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
+				igralecNaPotezi = igralecNaPotezi.naslednji();
+			}
 			return true;
 		}
-		for (Poteza veljavnaP : this.veljavnePoteze()) {
-			if (veljavnaP.jeEnaka(p)) {
-				System.out.println("Poteza se bo izvedla...");
-				p.opraviPotezo();
-				this.zaporedneNeveljavne = 0;
-				this.stanjeIgre = this.stanje();
-				if(!this.obstajaPoteza()){
-					this.zaporedneNeveljavne++;
-					this.stanjeIgre = this.stanje();
-					if(!this.obstajaPoteza()){
-						this.zaporedneNeveljavne++;
-						this.stanjeIgre = this.stanje();
-					}
-				}
-				return true;
-			}
-		}
-		System.out.println("igrajPotezo vrača false..");
 		return false;
-	}
-	
-	protected void igrajSe(){
-		// Začasne spremenljivke:
-		int zaporednaPoteza = 0;
-		
-		
-		/**
-		 * Blok, odgovoren za izvedbo poteze in nastavitev novega stanja igre.
-		 */
-		while (true) {
-			/**
-			 * Vmesen blok, namenjen izpisovanju igre v konzolo.
-			 */
-			for (int i = 0; i < Plosca.velikost; i++) {
-				System.out.print("*");
-			}
-			System.out.print("\n");
-			
-			System.out.println("Zaporedna poteza: " + zaporednaPoteza);
-			zaporednaPoteza++;
-			
-			System.out.print("Igralec na potezi: ");
-			if (igralecNaPotezi == Igralec.BLACK) {
-				System.out.println("BLACK");
-			} else if (igralecNaPotezi == Igralec.WHITE) {
-				System.out.println("WHITE");
-			} else {
-				System.out.println("PLAYER_ERROR");
-			}
-			
-			this.plosca.izpisiSe();
-			
-			for (int i = 0; i < Plosca.velikost; i++) {
-				System.out.print("*");
-			}
-			System.out.print("\n");
-			
-			//preveri, ali za trenutnega igralca obstajajo poteze in hkrati nastavi možne poteze igralcu.
-			if (this.obstajaPoteza()) {
-				Poteza poteza = null;
-
-				Scanner in = new Scanner(System.in);
-				// Prebere katero od možnih potez bi igralec rad odigral...
-				// (Izbira poteze tu je le simbolična, kasneje se bo gledal klik na polje -> koordinate.)
-				while (poteza == null) {
-					int vrstica, stolpec;
-					System.out.println("Vnesi vrstico: ");
-					vrstica = in.nextInt();
-					System.out.println("Vnesi stolpec: ");
-					stolpec = in.nextInt();
-					poteza = this.izberiPotezo(vrstica, stolpec);
-				}
-				in.reset();
-				
-				// ...jo opravi...
-				poteza.opraviPotezo();
-				// ...nato pa nastavi števec neveljavnih nazaj na 0, da se igra ne konča predčasno.
-				this.zaporedneNeveljavne = 0;
-				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanjeIgre = this.stanje();
-				System.out.println(stanjeIgre);
-			}
-			else {
-				// Posodobi število neveljavnih in zamenja igralca.
-				this.zaporedneNeveljavne++;
-				// Preveri stanje igre, tudi zamenja igralca na potezi.
-				stanjeIgre = this.stanje();
-				System.out.println(stanjeIgre);
-			}
-			
-			
-			
-			/**
-			 * Blok, ki po opravljeni potezi obravnava stanje igre.
-			 * System.out klici so le placeholderji; razmisliti bo treba, na kakšen način razglasiti zmagovalca,
-			 * da bo uporabniški vmesnik lahko to prebral.
-			 * 
-			 * Ideja: namesto tipa void, lahko ta funkcija vrne stanje ob koncu igre.
-			 */
-			if (stanjeIgre == Stanje.NEODLOCENO) {
-				System.out.println("Igra je neodločena!");
-				return;
-			} else if (stanjeIgre == Stanje.ZMAGA_BLACK) {
-				System.out.println("Zmagal je črni igralec!");
-				return;
-			} else if (stanjeIgre == Stanje.ZMAGA_WHITE) {
-				System.out.println("Zmagal je beli igralec!");
-				return;
-			} else {
-				continue;
-			}
-		}
 	}
 	
 	/**
 	 * @param plosca
 	 * @param igralec
 	 * V množico moznePoteze doda vse poteze, ki jih lahko igralec izvede.
-	 * Kliče jo metoda obstajaPoteza.
-	 * Paziti je treba, da se ta metoda res pokliče, drugače bo zmeda.
 	 */
-	public HashSet<Poteza> veljavnePoteze() {
-		HashSet<Poteza> moznePoteze = new HashSet<Poteza>();
+	public LinkedList<Poteza> veljavnePoteze() {
+		LinkedList<Poteza> moznePoteze = new LinkedList<Poteza>();
 		for (int i = 0; i < Plosca.velikost; i++) {
 			for (int j = 0; j < Plosca.velikost; j++) {
 				if (plosca.polje[i][j] == Polje.PRAZNO) {
-					Poteza poteza = new Poteza(plosca, igralecNaPotezi, i, j);
-					if (poteza.jeVeljavna()) {
+					Poteza poteza = new Poteza(i, j);
+					if (jeVeljavna(poteza, false)) {
 						moznePoteze.add(poteza);
 					}
 				}
@@ -201,28 +105,21 @@ public class Igra {
 	}
 	
 	/**
-	 * @param plosca
 	 * @param igralec
-	 * @return true, če ima igralec na razpolago vsaj eno veljavno potezo.
+	 * @return množico potez, ki jih ima dani igralec na voljo
 	 */
-	public boolean obstajaPoteza(){
-		return veljavnePoteze().size() != 0;
-	}
-	
-	/**
-	 * @param igralec
-	 * @param vrstica
-	 * @param stolpec
-	 * @return poteza p: trenutno veljavna poteza, če obstaja; null sicer.
-	 */
-	private Poteza izberiPotezo(int vrstica, int stolpec) {
-		for (Poteza p : veljavnePoteze()) {
-			
-			if (p.vrstica == vrstica && p.stolpec == stolpec) {
-				return p;
-			}
+	public LinkedList<Poteza> potezeIgralca(Igralec igralec) {
+		LinkedList<Poteza> poteze = new LinkedList<Poteza>();
+		if (igralec == this.igralecNaPotezi) {
+			poteze = veljavnePoteze();
+		} else {
+			// Začasno spremenimo igralca na potezi
+			igralecNaPotezi = igralec;
+			poteze = veljavnePoteze();
+			// Spremenimo ga takoj nazaj, preden stanje to izve.
+			igralecNaPotezi = igralec.naslednji();
 		}
-		return null;
+		return poteze;
 	}
 	
 	/**
@@ -231,14 +128,76 @@ public class Igra {
 	 * POMEMBNO: Metoda tudi zamenja igralca na potezi (zato tega ni treba delati ročno)!
 	 */
 	public Stanje stanje() {
-		if (this.zaporedneNeveljavne >= 2) {
+		if (potezeIgralca(igralecNaPotezi).isEmpty()
+			&& potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 			int [] rezultat = this.plosca.prestejPoBarvah();
 			if (rezultat[0] == rezultat[1]) return Stanje.NEODLOCENO;
 			else return (rezultat[0] < rezultat[1] ? Stanje.ZMAGA_WHITE : Stanje.ZMAGA_BLACK);	
-		} else {
-			igralecNaPotezi = igralecNaPotezi.naslednji();
-			return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 		}
+		return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 	}
 
+	
+	/**
+	 * Preveri veljavnost poteze in nastavi ugodne smeri, če obstajajo.
+	 */
+	public boolean jeVeljavna(Poteza p, boolean polniUgodne){
+		boolean successFlag = false;
+		
+		int vrstica = p.vrstica, stolpec = p.stolpec;
+		
+		if (this.plosca.polje[p.vrstica][p.stolpec] != Polje.PRAZNO) return false;
+		
+		for (Smer s : smer) {
+			int koef = 1;
+			while (p.vrstica + koef * s.y >= 0 && p.stolpec + koef * s.x >= 0 &&
+					p.vrstica + koef * s.y < Plosca.velikost && p.stolpec + koef * s.x < Plosca.velikost){
+				vrstica = p.vrstica + koef * s.y;
+				stolpec = p.stolpec + koef * s.x;
+				if (this.plosca.polje[vrstica][stolpec] == Polje.PRAZNO){
+					break;
+				} else if (this.plosca.polje[vrstica][stolpec] == this.igralecNaPotezi.barva() && koef == 1){
+					break;
+				} else if (koef > 1 && this.plosca.polje[vrstica][stolpec] == this.igralecNaPotezi.barva()){
+					if (polniUgodne) {
+						ugodneSmeri.add(s);
+						}
+					successFlag = true;
+					break;
+				}
+				koef++;
+			}
+		}
+		return successFlag;
+	}
+	
+	
+	/**
+	 * @param smeri - sprejme ugodne smeri
+	 * Ta metoda dejansko opravi potezo (obrača ploščke).
+	 * 
+	 * Pomembno: ta metoda je striktno private.
+	 */
+	private void opraviPotezo(Poteza p){
+		for (Smer s : ugodneSmeri){
+			int koef = 1, vrstica = p.vrstica, stolpec = p.stolpec;
+			//Najprej postavimo plošček na izbrano polje.
+			if (this.igralecNaPotezi == Igralec.BLACK) {
+				this.plosca.polje[p.vrstica][p.stolpec]= Polje.BLACK;
+			} else {
+				this.plosca.polje[p.vrstica][p.stolpec] = Polje.WHITE;
+			}
+			//Nato še obrnemo preostale ploščke, ki jih igralec odvzame nasprotniku.
+			// Še enkrat dodan pogoj za ploščo, ker se pojavlja napaka.
+			while (this.plosca.polje[p.vrstica + koef * s.y][p.stolpec + koef * s.x] == igralecNaPotezi.barva().nasprotno() &&
+					p.vrstica + koef * s.y >= 0 && p.stolpec + koef * s.x >= 0 && 
+					p.vrstica + koef * s.y < Plosca.velikost && p.stolpec + koef * s.x < Plosca.velikost){
+				vrstica = p.vrstica + koef * s.y;
+				stolpec = p.stolpec + koef * s.x;
+				this.plosca.polje[vrstica][stolpec] = Polje.obrniPloscek(this.plosca.polje[vrstica][stolpec]);
+				koef++;
+			}
+		}
+		this.ugodneSmeri.clear();
+	}
 }
