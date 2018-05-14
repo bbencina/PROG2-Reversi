@@ -28,10 +28,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 	private JLabel status;
 	
-	private JMenuItem zapri_okno;
-	private JMenuItem dva_igralca;
-	private JMenuItem igralec_beli;
-	private JMenuItem igralec_crni;
+	private JMenuItem zapriOkno;
+	private JMenuItem dvaIgralca;
+	private JMenuItem igralecBeli;
+	private JMenuItem igralecCrni;
 	
 	public GlavnoOkno() {
 		this.setTitle("Reversi");
@@ -39,34 +39,34 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		this.setLayout(new GridBagLayout());
 		
 		// menu okno
-		JMenuBar menu_bar = new JMenuBar();
-		this.setJMenuBar(menu_bar);
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
 		
-		JMenu okno_menu = new JMenu("Okno");
-		menu_bar.add(okno_menu);
+		JMenu oknoMenu = new JMenu("Okno");
+		menuBar.add(oknoMenu);
 		
-		zapri_okno = new JMenuItem("Zapri");
-		okno_menu.add(zapri_okno);
-		zapri_okno.addActionListener(this);
+		zapriOkno = new JMenuItem("Zapri");
+		oknoMenu.add(zapriOkno);
+		zapriOkno.addActionListener(this);
 		
 		// menu nova igra
-		JMenu igra_menu = new JMenu("Nova igra");
-		menu_bar.add(igra_menu);
+		JMenu igraMenu = new JMenu("Nova igra");
+		menuBar.add(igraMenu);
 		
-		dva_igralca = new JMenuItem("Dva igralca");
-		igra_menu.add(dva_igralca);
-		dva_igralca.addActionListener(this);
+		dvaIgralca = new JMenuItem("Dva igralca");
+		igraMenu.add(dvaIgralca);
+		dvaIgralca.addActionListener(this);
 		
-		JMenu izberi_barvo = new JMenu("Igralec proti računalniku");
-		igra_menu.add(izberi_barvo);
+		JMenu izberiBarvo = new JMenu("Igralec proti računalniku");
+		igraMenu.add(izberiBarvo);
 		
-		igralec_crni = new JMenuItem("Črni");
-		izberi_barvo.add(igralec_crni);
-		igralec_crni.addActionListener(this);
+		igralecCrni = new JMenuItem("Črni");
+		izberiBarvo.add(igralecCrni);
+		igralecCrni.addActionListener(this);
 		
-		igralec_beli = new JMenuItem("Beli");
-		izberi_barvo.add(igralec_beli);
-		igralec_beli.addActionListener(this);
+		igralecBeli = new JMenuItem("Beli");
+		izberiBarvo.add(igralecBeli);
+		igralecBeli.addActionListener(this);
 		
 		// igralno polje
 		polje = new IgralnoPolje(this);
@@ -90,19 +90,29 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		getContentPane().add(status, status_layout);
 		
 		/**
-		 * Privzeto je, da sta oba igralca cloveka.
+		 * Privzeto je, da sta oba igralca človeka.
 		 */
-		nova_igra(true, true);
+		novaIgra(true, true);
 	}
 	
-	public void nova_igra(boolean clovekBlack, boolean clovekWhite) {
+	public void novaIgra(boolean clovekBlack, boolean clovekWhite) {
 		if (okupatorBlack != null) okupatorBlack.prekini();
 		if (okupatorWhite != null) okupatorWhite.prekini();
 		
 		this.igra = new Igra();
 		
-		if (clovekBlack && clovekWhite){
+		if (clovekBlack && clovekWhite) {
 			okupatorBlack = new Clovek(this);
+			okupatorWhite = new Clovek(this);
+		}
+		
+		if (clovekBlack && !clovekWhite) {
+			okupatorBlack = new Clovek(this);
+			// okupatorWhite = racunalnik
+		}
+		
+		if (!clovekBlack && clovekWhite) {
+			// okupatorBlack = racunalnik
 			okupatorWhite = new Clovek(this);
 		}
 		
@@ -118,31 +128,32 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == zapri_okno) {
+		if(e.getSource() == zapriOkno) {
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
 		
-		else if(e.getSource() == dva_igralca) {
+		else if(e.getSource() == dvaIgralca) {
 			// začnemo igro za dva igralca
-			nova_igra(true, true);
+			novaIgra(true, true);
 		}
 		
-		else if(e.getSource() == igralec_crni) {
+		else if(e.getSource() == igralecCrni) {
 			// igra proti računalniku, igralec ima prvo potezo
+			novaIgra(true, false);
+			
 		}
 		
-		else if(e.getSource() == igralec_beli) {
+		else if(e.getSource() == igralecBeli) {
 			// igra proti računalniku, računalnik ima prvo potezo
+			novaIgra(false, true);
 		}
 		 
 	}
 	
 	public void igraj(Poteza p) {
-		System.out.println("Sedaj se bo igrala poteza...");
 		this.igra.igrajPotezo(p);
 		this.osveziGUI();
-		 
-		// Potrebno dopolnitve, ko bodo ustvarjeni razredi za igralce.
+		
 		switch (this.igra.stanje()) {
 		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
 		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
@@ -169,7 +180,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	}
 	
 	public void klikniPolje(int i, int j){
-		System.out.println("Klik je prišel do okna...");
 		if (igra != null) {
 			switch (igra.stanje()){
 			case NA_POTEZI_BLACK:

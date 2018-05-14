@@ -92,7 +92,6 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
-		System.out.println("Clicked!");
 		int x = event.getX(), y = event.getY();
 		int dim = (int) this.stranicaPolja();
 		int i = (y - ZAMIK_Y) / dim;
@@ -100,8 +99,7 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 		int j = (x - ZAMIK_X) / dim;
 		double dj = ((x - ZAMIK_X) % dim) / this.stranicaPolja();
 		
-		System.out.println("" + i + " " + j);
-		
+		//Preverimo, da uporabnik ni kliknil na črto med polji.
 		if (0 <= i && i < Plosca.velikost &&
 			0.5 * DEBELINA_CRTE < di && di < 1.0 - 0.5 * DEBELINA_CRTE &&
 			0 <= j && j < Plosca.velikost && 

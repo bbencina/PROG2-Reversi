@@ -4,10 +4,12 @@ import junit.framework.TestCase;
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
+import logika.Polje;
 import logika.Stanje;
 import logika.Poteza;
-import java.util.ArrayList;
-import java.util.List;
+import logika.Smer;
+
+import java.util.LinkedList;
 import java.util.Random;
 
 public class TestIgra extends TestCase {
@@ -15,7 +17,7 @@ public class TestIgra extends TestCase {
 	public void testIgra() {
 		
 		// S for zanko lahko z vsakim testom preverimo poljubno število naključnih iger
-		int iteracije = 10000;
+		int iteracije = 1000;
 		
 		for (int i = 0; i <= iteracije; i++) {
 			
@@ -25,32 +27,32 @@ public class TestIgra extends TestCase {
 			
 			boolean konecIgre = false;
 			
+			Poteza p;
+			
 			// Na začetku je na potezi črni
 			assertEquals(igra.getIgralecNaPotezi(), Igralec.BLACK);
 			
 			while(! konecIgre) {
 				Igralec igralec1 = igra.getIgralecNaPotezi();
-				if(igra.obstajaPoteza()) {
+				stanje = igra.stanje();
+				//Preverimo, da je kdo na potezi
+				assertTrue(stanje == Stanje.NA_POTEZI_BLACK | stanje == Stanje.NA_POTEZI_WHITE);
+				
+				if(! igra.potezeIgralca(igralec1).isEmpty()) {
 					//Preuredimo množico možnih potez v seznam in izberemo naključno potezo
-					List<Poteza> izborPotez = new ArrayList<Poteza>(igra.veljavnePoteze());
+					LinkedList<Poteza> izborPotez = igra.potezeIgralca(igralec1);
 					Random r = new Random(i);
 					Poteza poteza = izborPotez.get(r.nextInt(izborPotez.size()));
-					poteza.opraviPotezo();
-					igra.zaporedneNeveljavne = 0;
-				} else {
-					igra.zaporedneNeveljavne ++;
+					igra.igrajPotezo(poteza);
+					igralec1 = igra.getIgralecNaPotezi();
 				}
 				stanje = igra.stanje();
-				
-				if (igra.zaporedneNeveljavne < 2) {
-					//Preverimo, da se je igralec na potezi zamenjal
-					assertTrue(igralec1 != igra.getIgralecNaPotezi());
-					//Preverimo, da je kdo na potezi
-					assertTrue(stanje == Stanje.NA_POTEZI_BLACK | stanje == Stanje.NA_POTEZI_WHITE);
-				} 
+					
+				//Preverimo, da se je igralec na potezi zamenjal
+				assertTrue(igralec1 == igra.getIgralecNaPotezi());
 				
 				//Če ni več veljavnih potez
-				else {
+				if (stanje == Stanje.NEODLOCENO || stanje == Stanje.ZMAGA_BLACK || stanje == Stanje.ZMAGA_WHITE){
 					
 					int plosckiCrni = igra.getPlosca().prestejPoBarvah()[0];
 					int plosckiBeli = igra.getPlosca().prestejPoBarvah()[1];
@@ -65,8 +67,39 @@ public class TestIgra extends TestCase {
 					
 					konecIgre = true;
 				}
+				
+
+				//Testiramo vse možne poteze na plošči
+				for (int x = 0; x < Plosca.velikost; x++) {
+					for (int y = 0; y < Plosca.velikost; y++) {
+						p = new Poteza(x, y);
+						
+						//Ustvarimo kopijo igre, ker ne smemo spreminjati igre, ki se trenutno igra.
+						Igra kopijaIgre = new Igra(igra);
+						
+						//Test preveri, ali se poteze res opravljajo le na praznih poljih.
+						if (kopijaIgre.jeVeljavna(p, true) && kopijaIgre.getPlosca().polje[p.vrstica][p.stolpec] != Polje.PRAZNO) {
+							fail("Poskus poteze na že zapolnjenem polju.");
+						}
+						
+						//Test preveri, ali igra.jeVeljavna(p, true) res nastavi neprazno množico ugodnih smeri.
+						assertEquals(kopijaIgre.jeVeljavna(p, true), ! kopijaIgre.ugodneSmeri.isEmpty());
+						
+						//Test le neumno pogleda okolico polja v ugodnih smereh in preveri, da sosednje polje 
+						//slučajno ni prazno ali z iste barve ploščkom.
+						for (Smer s : kopijaIgre.ugodneSmeri) {
+							if (kopijaIgre.getPlosca().polje[p.vrstica + s.y][p.stolpec + s.x] == Polje.PRAZNO) {
+								fail("Sosednje polje je prazno");
+							}
+							if (kopijaIgre.getPlosca().polje[p.vrstica + s.y][p.stolpec + s.x] == kopijaIgre.getPlosca().polje[p.vrstica][p.stolpec]) {
+								fail("Sosednje polje je enako izvornemu.");
+							}
+						}
+					}
+				}
 			}
 		}
 	}
-	
 }
+		
+

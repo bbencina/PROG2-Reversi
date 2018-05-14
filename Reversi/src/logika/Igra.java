@@ -1,6 +1,7 @@
 package logika;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Igra {
 	
@@ -16,7 +17,7 @@ public class Igra {
 	private Plosca plosca;
 	
 	
-	// Moralo bi pisati private, a potrubujem public za jUnit teste.
+	// Moralo bi pisati private, a potrebujem public za jUnit teste.
 	public HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
 	
 	private static final Smer[] smer;
@@ -73,16 +74,13 @@ public class Igra {
 	}
 	
 	public boolean igrajPotezo(Poteza p) {
-		System.out.println("Poteza je v logika/Igra");
 		if (jeVeljavna(p, true)) {
-			System.out.println("Poteza se bo izvedla...");
 			opraviPotezo(p);
 			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 				igralecNaPotezi = igralecNaPotezi.naslednji();
 			}
 			return true;
 		}
-		System.out.println("igrajPotezo vrača false..");
 		return false;
 	}
 	
@@ -91,8 +89,8 @@ public class Igra {
 	 * @param igralec
 	 * V množico moznePoteze doda vse poteze, ki jih lahko igralec izvede.
 	 */
-	public HashSet<Poteza> veljavnePoteze() {
-		HashSet<Poteza> moznePoteze = new HashSet<Poteza>();
+	public LinkedList<Poteza> veljavnePoteze() {
+		LinkedList<Poteza> moznePoteze = new LinkedList<Poteza>();
 		for (int i = 0; i < Plosca.velikost; i++) {
 			for (int j = 0; j < Plosca.velikost; j++) {
 				if (plosca.polje[i][j] == Polje.PRAZNO) {
@@ -110,8 +108,8 @@ public class Igra {
 	 * @param igralec
 	 * @return množico potez, ki jih ima dani igralec na voljo
 	 */
-	public HashSet<Poteza> potezeIgralca(Igralec igralec) {
-		HashSet<Poteza> poteze = new HashSet<Poteza>();
+	public LinkedList<Poteza> potezeIgralca(Igralec igralec) {
+		LinkedList<Poteza> poteze = new LinkedList<Poteza>();
 		if (igralec == this.igralecNaPotezi) {
 			poteze = veljavnePoteze();
 		} else {
@@ -162,7 +160,6 @@ public class Igra {
 					break;
 				} else if (koef > 1 && this.plosca.polje[vrstica][stolpec] == this.igralecNaPotezi.barva()){
 					if (polniUgodne) {
-						System.out.println("Polnim ugodne smeri..");
 						ugodneSmeri.add(s);
 						}
 					successFlag = true;
@@ -201,7 +198,6 @@ public class Igra {
 				koef++;
 			}
 		}
-		System.out.println("Brišem ugodne smeri..");
 		this.ugodneSmeri.clear();
 	}
 }
