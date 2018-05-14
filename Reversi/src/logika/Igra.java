@@ -70,6 +70,14 @@ public class Igra {
 				p.opraviPotezo();
 				this.zaporedneNeveljavne = 0;
 				this.stanjeIgre = this.stanje();
+				if(!this.obstajaPoteza()){
+					this.zaporedneNeveljavne++;
+					this.stanjeIgre = this.stanje();
+					if(!this.obstajaPoteza()){
+						this.zaporedneNeveljavne++;
+						this.stanjeIgre = this.stanje();
+					}
+				}
 				return true;
 			}
 		}
