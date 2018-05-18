@@ -32,6 +32,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem dvaIgralca;
 	private JMenuItem igralecBeli;
 	private JMenuItem igralecCrni;
+	private JMenuItem dvaRacunalnika;
 	
 	public GlavnoOkno() {
 		this.setTitle("Reversi");
@@ -67,6 +68,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		igralecBeli = new JMenuItem("Beli");
 		izberiBarvo.add(igralecBeli);
 		igralecBeli.addActionListener(this);
+		
+		dvaRacunalnika = new JMenuItem("Dva računalnika");
+		igraMenu.add(dvaRacunalnika);
+		dvaRacunalnika.addActionListener(this);
 		
 		// igralno polje
 		polje = new IgralnoPolje(this);
@@ -108,12 +113,17 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		if (clovekBlack && !clovekWhite) {
 			okupatorBlack = new Clovek(this);
-			// okupatorWhite = racunalnik
+			okupatorWhite = new Racunalnik(this);
 		}
 		
 		if (!clovekBlack && clovekWhite) {
-			// okupatorBlack = racunalnik
+			okupatorBlack = new Racunalnik(this);
 			okupatorWhite = new Clovek(this);
+		}
+		
+		if (!clovekBlack && !clovekWhite) {
+			okupatorBlack = new Racunalnik(this);
+			okupatorWhite = new Racunalnik(this);
 		}
 		
 		switch (igra.stanje()){
