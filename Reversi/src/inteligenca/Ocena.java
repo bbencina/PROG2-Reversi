@@ -1,11 +1,13 @@
 package inteligenca;
 
 import logika.Igra;
+import logika.Igralec;
 import logika.Plosca;
+import logika.Polje;
 
 /**
- * Ker bodo vse metode stati�ne, ta razred ne potrebuje konstruktorja.
- * V nasprotnem primeru ima� tu opomnik, da ga napi�i.
+ * Ker bodo vse metode statične, ta razred ne potrebuje konstruktorja.
+ * V nasprotnem primeru imaš tu opomnik, da ga napiši.
  */
 public class Ocena {
 	public static final int ZMAGA = 1000000; // milijon
@@ -27,6 +29,35 @@ public class Ocena {
 				return true;
 			}
 		return false;
+	}
+	
+	private static boolean enaOdRoba(int vrstica, int stolpec){
+		if ((vrstica == 1 || vrstica == Plosca.velikost - 2 ||
+				stolpec == 1 || stolpec == Plosca.velikost - 2) &&
+				! naRobu(vrstica, stolpec)) {
+				return true;
+			}
+		return false;
+	}
+	
+	/**
+	 * Oceni trenutno pozicijo.
+	 * @return vrednost trenutne igre
+	 * Zaenkrat je še zelo neumna, samo prešteje ploščke obeh igralcev in vrne razliko.
+	 */
+	protected int oceniPozicijo(Igra igra, Igralec jaz){
+		Plosca plosca = igra.getPlosca();
+		int mojiPloscki = 0;
+		int nasprotnikoviPloscki = 0;
+		switch(jaz){
+		case BLACK:
+			mojiPloscki = plosca.prestejPoBarvah()[0];
+			nasprotnikoviPloscki = plosca.prestejPoBarvah()[1];
+		case WHITE:
+			mojiPloscki = plosca.prestejPoBarvah()[1];
+			nasprotnikoviPloscki = plosca.prestejPoBarvah()[0];
+		}
+		return mojiPloscki - nasprotnikoviPloscki;
 	}
 
 }

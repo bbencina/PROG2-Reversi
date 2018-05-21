@@ -2,12 +2,13 @@ package gui;
 
 import javax.swing.SwingWorker;
 
+import inteligenca.Minimax;
 import logika.Poteza;
 
 public class Racunalnik extends Okupator {
 	private GlavnoOkno master;
 	
-	private SwingWorker<Poteza,Object> napadalec;
+	private SwingWorker<Poteza, Object> napadalec;
 
 	public Racunalnik(GlavnoOkno master) {
 		this.master = master;
@@ -16,7 +17,7 @@ public class Racunalnik extends Okupator {
 	@Override
 	public void zacni_potezo() {
 		// razmisli in izbere potezo
-		// napadalec = new Minimaks(master, globina, ...);
+		napadalec = new Minimax(master, master.tezavnost);
 		napadalec.execute();
 
 	}

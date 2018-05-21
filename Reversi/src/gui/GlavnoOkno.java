@@ -34,6 +34,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem igralecCrni;
 	private JMenuItem dvaRacunalnika;
 	
+	//definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
+	public int tezavnost = 2;
+	
 	public GlavnoOkno() {
 		this.setTitle("Reversi");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
