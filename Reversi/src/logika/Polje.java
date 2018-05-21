@@ -6,9 +6,7 @@ public enum Polje {
 	PRAZNO;
 	
 	public static Polje obrniPloscek(Polje polje) {
-		if (polje == PRAZNO){
-			return PRAZNO;
-		}
+		assert(polje != PRAZNO);
 		return (polje == BLACK ? WHITE : BLACK);
 	}
 	
