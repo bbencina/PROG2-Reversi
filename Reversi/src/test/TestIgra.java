@@ -78,12 +78,12 @@ public class TestIgra extends TestCase {
 						Igra kopijaIgre = new Igra(igra);
 						
 						//Test preveri, ali se poteze res opravljajo le na praznih poljih.
-						if (kopijaIgre.jeVeljavna(p, true) && kopijaIgre.getPlosca().polje[p.vrstica][p.stolpec] != Polje.PRAZNO) {
+						if (kopijaIgre.jeVeljavna(p) && kopijaIgre.getPlosca().polje[p.vrstica][p.stolpec] != Polje.PRAZNO) {
 							fail("Poskus poteze na že zapolnjenem polju.");
 						}
 						
 						//Test preveri, ali igra.jeVeljavna(p, true) res nastavi neprazno množico ugodnih smeri.
-						assertEquals(kopijaIgre.jeVeljavna(p, true), ! kopijaIgre.ugodneSmeri.isEmpty());
+						assertEquals(kopijaIgre.napolniUgodneCeVeljavna(p), ! kopijaIgre.ugodneSmeri.isEmpty());
 						
 						//Test le neumno pogleda okolico polja v ugodnih smereh in preveri, da sosednje polje 
 						//slučajno ni prazno ali z iste barve ploščkom.

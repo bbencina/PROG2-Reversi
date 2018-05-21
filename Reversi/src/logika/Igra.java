@@ -74,8 +74,8 @@ public class Igra {
 	}
 	
 	public boolean igrajPotezo(Poteza p) {
-		if (jeVeljavna(p, true)) {
-			opraviPotezo(p);
+		if (napolniUgodneCeVeljavna(p)) {
+			this.opraviPotezo(p);
 			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 				igralecNaPotezi = igralecNaPotezi.naslednji();
 			}
@@ -95,7 +95,7 @@ public class Igra {
 			for (int j = 0; j < Plosca.velikost; j++) {
 				if (plosca.polje[i][j] == Polje.PRAZNO) {
 					Poteza poteza = new Poteza(i, j);
-					if (jeVeljavna(poteza, false)) {
+					if (jeVeljavna(poteza)) {
 						moznePoteze.add(poteza);
 					}
 				}
@@ -136,12 +136,30 @@ public class Igra {
 		}
 		return (igralecNaPotezi == Igralec.BLACK ? Stanje.NA_POTEZI_BLACK : Stanje.NA_POTEZI_WHITE);
 	}
+	
+	/**
+	 * Preveri veljavnost poteze in ne napolni množice ugodnih.
+	 * @param p
+	 * @return
+	 */
+	public boolean jeVeljavna (Poteza p){
+		return jeVeljavnaPomozna(p, false);
+	}
+	
+	/**
+	 * Preveri veljavnost poteze in napolni množico ugodnih.
+	 * @param p
+	 * @return
+	 */
+	public boolean napolniUgodneCeVeljavna(Poteza p){
+		return jeVeljavnaPomozna(p, true);
+	}
 
 	
 	/**
 	 * Preveri veljavnost poteze in nastavi ugodne smeri, če obstajajo.
 	 */
-	public boolean jeVeljavna(Poteza p, boolean polniUgodne){
+	private boolean jeVeljavnaPomozna(Poteza p, boolean polniUgodne){
 		boolean successFlag = false;
 		
 		int vrstica = p.vrstica, stolpec = p.stolpec;
