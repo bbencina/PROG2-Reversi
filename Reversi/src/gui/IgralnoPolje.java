@@ -17,12 +17,12 @@ public class IgralnoPolje extends JPanel implements MouseListener{
 	
 	private GlavnoOkno master;
 	
-	private final static double DEBELINA_CRTE = 0.1;
+	private final static double DEBELINA_CRTE = 0.05;
 	private final static double PADDING = 0.1;
-	private final static int ZAMIK_X = 5;
-	private final static int ZAMIK_Y = 5;
+	private final static int ZAMIK_X =(int) (50 * DEBELINA_CRTE);
+	private final static int ZAMIK_Y = (int)(50 * DEBELINA_CRTE);
 	
-	private final static Color barvaCrte = Color.RED;
+	private final static Color barvaCrte = Color.decode("#cc0000");
 	
 	public IgralnoPolje(GlavnoOkno master) {
 		super();
