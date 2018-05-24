@@ -27,6 +27,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private Okupator okupatorBlack = null, okupatorWhite = null;
 	
 	private JLabel status;
+	private JLabel stetjePlosckov;
 	
 	private JMenuItem zapriOkno;
 	private JMenuItem dvaIgralca;
@@ -86,6 +87,17 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
+		// statusna vrstica za trenutno število ploščkov
+			stetjePlosckov = new JLabel();
+			stetjePlosckov.setFont(new Font(stetjePlosckov.getFont().getName(),
+									Font.BOLD,
+									20));
+			GridBagConstraints stetjePlosckov_layout = new GridBagConstraints();
+			stetjePlosckov_layout.gridx = 0;
+			stetjePlosckov_layout.gridy = 1;
+			stetjePlosckov_layout.anchor = GridBagConstraints.CENTER;
+			getContentPane().add(stetjePlosckov, stetjePlosckov_layout);
+		
 		// statusna vrstica za sporočila
 		status = new JLabel();
 		status.setFont(new Font(status.getFont().getName(),
@@ -93,7 +105,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 							    20));
 		GridBagConstraints status_layout = new GridBagConstraints();
 		status_layout.gridx = 0;
-		status_layout.gridy = 1;
+		status_layout.gridy = 2;
 		status_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, status_layout);
 		
@@ -183,6 +195,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	public void osveziGUI() {
 		if (igra == null) {
 			status.setText("Igra ni v teku.");
+			stetjePlosckov.setText("");
 		}
 		else {
 			switch(this.igra.stanje()) {
@@ -193,6 +206,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			case NEODLOCENO: status.setText("Neodločen izid"); break;
 			}
 		}
+		String plosckiCrni = Integer.toString(this.igra.getPlosca().prestejPoBarvah()[0]);
+		String plosckiBeli = Integer.toString(this.igra.getPlosca().prestejPoBarvah()[1]);
+		stetjePlosckov.setText("Črni ploščki: " + plosckiCrni + "    " + "Beli ploščki: " + plosckiBeli );
 		polje.repaint();
 	}
 	

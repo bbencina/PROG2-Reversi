@@ -18,6 +18,7 @@ public class Ocena {
 	public static final int ROB = 20;
 	public static final int ENA_OD_ROBA = 2;
 	public static final int NAVADNO = 5;
+	public static final int SVOBODA = 5;
 	
 	
 	private static boolean naVogalu(int vrstica, int stolpec){
@@ -87,8 +88,8 @@ public class Ocena {
 		}
 		
 		int steviloPotez = igra.potezeIgralca(igra.getIgralecNaPotezi()).size();
-		if (igra.getIgralecNaPotezi() == jaz) ocenaPlosce += 5 * steviloPotez;
-		else ocenaPlosce -= 5 * steviloPotez;
+		if (igra.getIgralecNaPotezi() == jaz) ocenaPlosce += SVOBODA * steviloPotez;
+		else ocenaPlosce -= SVOBODA * steviloPotez;
 		
 		return ocenaPlosce;
 	}
