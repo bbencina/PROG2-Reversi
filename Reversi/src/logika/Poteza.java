@@ -14,4 +14,9 @@ public class Poteza {
 		this.stolpec = stolpec;
 	}
 
+	@Override
+	public String toString() {
+		return "Poteza [vrstica=" + vrstica + ", stolpec=" + stolpec + "]";
+	}
+
 }

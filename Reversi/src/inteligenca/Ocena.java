@@ -14,8 +14,8 @@ public class Ocena {
 	public static final int PORAZ = (-1) * ZMAGA;
 	public static final int NEODLOCENO = 0;
 	
-	public static final int VOGAL = 100;
-	public static final int ROB = 20;
+	public static final int VOGAL = 1000;
+	public static final int ROB = 50;
 	public static final int ENA_OD_ROBA = 2;
 	public static final int NAVADNO = 5;
 	public static final int SVOBODA = 5;
@@ -86,10 +86,6 @@ public class Ocena {
 				}
 			}
 		}
-		
-		int steviloPotez = igra.potezeIgralca(igra.getIgralecNaPotezi()).size();
-		if (igra.getIgralecNaPotezi() == jaz) ocenaPlosce += SVOBODA * steviloPotez;
-		else ocenaPlosce -= SVOBODA * steviloPotez;
 		
 		return ocenaPlosce;
 	}
