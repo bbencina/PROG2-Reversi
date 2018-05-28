@@ -35,8 +35,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem igralecCrni;
 	private JMenuItem dvaRacunalnika;
 	
+	private JMenuItem lahka;
+	private JMenuItem srednjeTezka;
+	private JMenuItem tezka;
+	private JMenuItem zeloTezka;
+	private JMenuItem neUpas;
+	
 	//definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
-	public int tezavnost = 5;
+	public int tezavnost = 1;
 	
 	public GlavnoOkno() {
 		this.setTitle("Reversi");
@@ -76,6 +82,29 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		dvaRacunalnika = new JMenuItem("Dva računalnika");
 		igraMenu.add(dvaRacunalnika);
 		dvaRacunalnika.addActionListener(this);
+		
+		JMenu tezavnostMenu = new JMenu("Nastavi težavnost");
+		menuBar.add(tezavnostMenu);
+		
+		lahka = new JMenuItem("Lahka");
+		tezavnostMenu.add(lahka);
+		lahka.addActionListener(this);
+		
+		srednjeTezka = new JMenuItem("Srednje težka");
+		tezavnostMenu.add(srednjeTezka);
+		srednjeTezka.addActionListener(this);
+		
+		tezka = new JMenuItem("Težka");
+		tezavnostMenu.add(tezka);
+		tezka.addActionListener(this);
+		
+		zeloTezka = new JMenuItem("Zelo težka");
+		tezavnostMenu.add(zeloTezka);
+		zeloTezka.addActionListener(this);
+		
+		neUpas = new JMenuItem("Ne upaš si");
+		tezavnostMenu.add(neUpas);
+		neUpas.addActionListener(this);
 		
 		// igralno polje
 		polje = new IgralnoPolje(this);
@@ -175,6 +204,26 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == dvaRacunalnika) {
 			novaIgra(false, false);
+		}
+		
+		else if (e.getSource() == lahka) {
+			this.tezavnost = 1;
+		}
+		
+		else if (e.getSource() == srednjeTezka) {
+			this.tezavnost = 2;
+		}
+		
+		else if (e.getSource() == tezka) {
+			this.tezavnost = 3;
+		}
+		
+		else if (e.getSource() == zeloTezka) {
+			this.tezavnost = 4;
+		}
+		
+		else if (e.getSource() == neUpas) {
+			this.tezavnost = 6;
 		}
 		 
 	}

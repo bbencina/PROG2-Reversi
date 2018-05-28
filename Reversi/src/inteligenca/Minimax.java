@@ -29,7 +29,7 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		this.jaz = igra.getIgralecNaPotezi();
 		OcenjenaPoteza p = minimax(0, igra);
 		assert(p.poteza != null);
-		System.out.println("Minimax je izraËunal potezo: " + p);
+		System.out.println("Minimax je izraƒçunal potezo: " + p);
 		return p.poteza;
 	}
 	

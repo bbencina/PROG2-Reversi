@@ -47,35 +47,6 @@ public class Plosca {
 		
 		return steviloPlosckov;
 	}
-	
-	protected void izpisiSe() {
-		// Zgornji rob plošče
-		for (int i = 0; i < Plosca.velikost; i++) {
-			System.out.print(" " + i);
-		}
-		System.out.print("\n");
-		
-		// Vmesni del
-		for (int i = 0; i < Plosca.velikost; i++) {
-			System.out.print("|");
-			for (int j = 0; j < Plosca.velikost; j++) {
-				if (polje[i][j] == Polje.BLACK) {
-					System.out.print("X");
-				} else if (polje[i][j] == Polje.WHITE) {
-					System.out.print("O");
-				} else {
-					System.out.print(" ");
-				}
-				System.out.print("|");
-			}
-			System.out.print(i + "\n");
-		}
-		
-		// Spodnji rob plošče
-		for (int i = 0; i < Plosca.velikost; i++) {
-			System.out.print(" -");
-		}
-		System.out.print("\n");
-	}
+
 
 }
