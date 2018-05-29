@@ -42,7 +42,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem neUpas;
 	
 	//definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
-	public int tezavnost = 1;
+	private int tezavnost = 2;
 	
 	public GlavnoOkno() {
 		this.setTitle("Reversi");
@@ -141,10 +141,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		/**
 		 * Privzeto je, da sta oba igralca človeka.
 		 */
-		novaIgra(true, true);
+		novaIgra(true, true, tezavnost);
 	}
 	
-	public void novaIgra(boolean clovekBlack, boolean clovekWhite) {
+	public void novaIgra(boolean clovekBlack, boolean clovekWhite, int tezavnost) {
 		if (okupatorBlack != null) okupatorBlack.prekini();
 		if (okupatorWhite != null) okupatorWhite.prekini();
 		
@@ -157,17 +157,17 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		if (clovekBlack && !clovekWhite) {
 			okupatorBlack = new Clovek(this);
-			okupatorWhite = new Racunalnik(this);
+			okupatorWhite = new Racunalnik(this, tezavnost);
 		}
 		
 		if (!clovekBlack && clovekWhite) {
-			okupatorBlack = new Racunalnik(this);
+			okupatorBlack = new Racunalnik(this, tezavnost);
 			okupatorWhite = new Clovek(this);
 		}
 		
 		if (!clovekBlack && !clovekWhite) {
-			okupatorBlack = new Racunalnik(this);
-			okupatorWhite = new Racunalnik(this);
+			okupatorBlack = new Racunalnik(this, tezavnost);
+			okupatorWhite = new Racunalnik(this, tezavnost);
 		}
 		
 		switch (igra.stanje()){
@@ -188,22 +188,22 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if(e.getSource() == dvaIgralca) {
 			// začnemo igro za dva igralca
-			novaIgra(true, true);
+			novaIgra(true, true, this.tezavnost);
 		}
 		
 		else if(e.getSource() == igralecCrni) {
 			// igra proti računalniku, igralec ima prvo potezo
-			novaIgra(true, false);
+			novaIgra(true, false, this.tezavnost);
 			
 		}
 		
 		else if(e.getSource() == igralecBeli) {
 			// igra proti računalniku, računalnik ima prvo potezo
-			novaIgra(false, true);
+			novaIgra(false, true, this.tezavnost);
 		}
 		
 		else if (e.getSource() == dvaRacunalnika) {
-			novaIgra(false, false);
+			novaIgra(false, false, this.tezavnost);
 		}
 		
 		else if (e.getSource() == lahka) {

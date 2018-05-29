@@ -7,17 +7,19 @@ import logika.Poteza;
 
 public class Racunalnik extends Okupator {
 	private GlavnoOkno master;
+	private int tezavnost;
 	
 	private SwingWorker<Poteza, Object> napadalec;
 
-	public Racunalnik(GlavnoOkno master) {
+	public Racunalnik(GlavnoOkno master, int tezavnost) {
 		this.master = master;
+		this.tezavnost = tezavnost;
 	}
 
 	@Override
 	public void zacni_potezo() {
 		// razmisli in izbere potezo
-		napadalec = new Minimax(master, master.tezavnost);
+		napadalec = new Minimax(master, tezavnost);
 		napadalec.execute();
 
 	}
