@@ -150,6 +150,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		this.igra = new Igra();
 		
+		System.out.println(tezavnost);
+		
 		if (clovekBlack && clovekWhite) {
 			okupatorBlack = new Clovek(this);
 			okupatorWhite = new Clovek(this);
@@ -208,22 +210,27 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == lahka) {
 			this.tezavnost = 1;
+			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == srednjeTezka) {
 			this.tezavnost = 2;
+			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == tezka) {
 			this.tezavnost = 3;
+			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == zeloTezka) {
 			this.tezavnost = 4;
+			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == neUpas) {
-			this.tezavnost = 6;
+			this.tezavnost = 60;
+			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}
 		 
 	}
