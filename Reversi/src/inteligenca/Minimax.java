@@ -35,10 +35,10 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		this.jaz = igra.getIgralecNaPotezi();
 		
 		// če se kliče naivni minimax
-		//OcenjenaPoteza p = minimax(0, igra);
+		OcenjenaPoteza p = minimax(0, igra);
 		
 		// če se kliče nenaivni minimax - alpha-beta pruning
-		OcenjenaPoteza p = alphabeta(0, igra);
+		//OcenjenaPoteza p = alphabeta(0, igra);
 		
 		assert(p.poteza != null);
 		System.out.println("Minimax je izračunal potezo: " + p);

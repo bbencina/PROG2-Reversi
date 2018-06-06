@@ -38,7 +38,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem lahka;
 	private JMenuItem srednjeTezka;
 	private JMenuItem tezka;
-	private JMenuItem zeloTezka;
 	private JMenuItem neUpas;
 	
 	//definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
@@ -97,10 +96,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		tezka = new JMenuItem("Težka");
 		tezavnostMenu.add(tezka);
 		tezka.addActionListener(this);
-		
-		zeloTezka = new JMenuItem("Zelo težka");
-		tezavnostMenu.add(zeloTezka);
-		zeloTezka.addActionListener(this);
 		
 		neUpas = new JMenuItem("Ne upaš si");
 		tezavnostMenu.add(neUpas);
@@ -219,11 +214,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		}
 		
 		else if (e.getSource() == tezka) {
-			this.tezavnost = 3;
-			System.out.println("Spremenjena tezavnost na " + tezavnost);
-		}
-		
-		else if (e.getSource() == zeloTezka) {
 			this.tezavnost = 4;
 			System.out.println("Spremenjena tezavnost na " + tezavnost);
 		}

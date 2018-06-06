@@ -143,11 +143,39 @@ public class Ocena {
 		
 		int mojiVogali = 0, nasprotnikoviVogali = 0;
 		if (plosca.polje[0][0] != Polje.PRAZNO){
-			
+			if (plosca.polje[0][0] == mojePolje) {
+				mojiVogali += 1;
+			} else {
+				nasprotnikoviVogali += 1;
+			}
+		}
+		if (plosca.polje[0][Plosca.velikost - 1] != Polje.PRAZNO){
+			if (plosca.polje[0][Plosca.velikost - 1] == mojePolje) {
+				mojiVogali += 1;
+			} else {
+				nasprotnikoviVogali += 1;
+			}
+		}
+		if (plosca.polje[Plosca.velikost - 1][0] != Polje.PRAZNO){
+			if (plosca.polje[Plosca.velikost - 1][0] == mojePolje) {
+				mojiVogali += 1;
+			} else {
+				nasprotnikoviVogali += 1;
+			}
+		}
+		if (plosca.polje[Plosca.velikost - 1][Plosca.velikost - 1] != Polje.PRAZNO){
+			if (plosca.polje[Plosca.velikost - 1][Plosca.velikost - 1] == mojePolje) {
+				mojiVogali += 1;
+			} else {
+				nasprotnikoviVogali += 1;
+			}
 		}
 		
+		if (mojiVogali + nasprotnikoviVogali != 0) {
+			ocenaPlosce += 100 * (mojiVogali - nasprotnikoviVogali) / (mojiVogali + nasprotnikoviVogali);
+		}
 		
-		return 0;
+		return (int) ocenaPlosce;
 	}
 
 }
