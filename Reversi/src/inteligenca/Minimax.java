@@ -147,14 +147,15 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 				
 				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre);
 				
-				if (v.vrednost < vmesna.vrednost){
+				if (v.poteza == null || v.vrednost < vmesna.vrednost){
 					v = new OcenjenaPoteza(p, vmesna.vrednost);
+					alpha = Math.max(alpha, v.vrednost);
+					if (beta <= alpha){
+						System.out.println("Beta manjši od alfa: " + beta + " " + alpha);
+						break;
+					}
 				}
-				alpha = Math.max(alpha, v.vrednost);
-				if (beta <= alpha){
-					System.out.println("Beta manjši od alfa: " + beta + " " + alpha);
-					break;
-				}
+				
 			}
 			
 			System.out.println("***GLOBINA " + i + " ***");
@@ -172,14 +173,15 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 				
 				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre);
 				
-				if (v.vrednost > vmesna.vrednost){
-					v =  new OcenjenaPoteza(p, vmesna.vrednost);;
+				if (v.poteza == null || v.vrednost > vmesna.vrednost){
+					v =  new OcenjenaPoteza(p, vmesna.vrednost);
+					beta = Math.min(beta, v.vrednost);
+					if (beta <= alpha){
+						System.out.println("Beta manjši od alfa: " + beta + " " + alpha);
+						break;
+					}
 				}
-				beta = Math.min(beta, v.vrednost);
-				if (beta <= alpha){
-					System.out.println("Beta manjši od alfa: " + beta + " " + alpha);
-					break;
-				}
+				
 			}
 			
 			System.out.println("***GLOBINA " + i + " ***");

@@ -1,9 +1,12 @@
 package inteligenca;
 
+import java.util.LinkedList;
+
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
 import logika.Polje;
+import logika.Poteza;
 
 /**
  * Ker bodo vse metode statične, ta razred ne potrebuje konstruktorja.
@@ -91,9 +94,7 @@ public class Ocena {
 	}
 	
 	/**
-	 * Oceni trenutno pozicijo.
-	 * @return vrednost trenutne igre
-	 * Zaenkrat je še zelo neumna, samo prešteje ploščke obeh igralcev in vrne razliko.
+	 * Požrešno oceni pozicijo, zastarelo.
 	 */
 	protected static int oceniPozicijoGreedy(Igra igra, Igralec jaz){
 		Plosca plosca = igra.getPlosca();
@@ -108,6 +109,45 @@ public class Ocena {
 			nasprotnikoviPloscki = plosca.prestejPoBarvah()[0];
 		}
 		return mojiPloscki - nasprotnikoviPloscki;
+	}
+	
+	protected static int oceniPozicijoNova(Igra igra, Igralec jaz){
+		Plosca plosca = igra.getPlosca();
+		double ocenaPlosce = 0;
+		
+		Polje mojePolje = (jaz == Igralec.BLACK ? Polje.BLACK : Polje.WHITE);
+		
+		int mojiPloscki = 0;
+		int nasprotnikoviPloscki = 0;
+		switch(jaz){
+		case BLACK:
+			mojiPloscki = plosca.prestejPoBarvah()[0];
+			nasprotnikoviPloscki = plosca.prestejPoBarvah()[1];
+		case WHITE:
+			mojiPloscki = plosca.prestejPoBarvah()[1];
+			nasprotnikoviPloscki = plosca.prestejPoBarvah()[0];
+		}
+		
+		if (mojiPloscki + nasprotnikoviPloscki == Plosca.velikost * Plosca.velikost){
+			if (mojiPloscki == nasprotnikoviPloscki) return NEODLOCENO;
+			else return (mojiPloscki > nasprotnikoviPloscki ? ZMAGA : PORAZ);
+		}
+		
+		ocenaPlosce += 100 * (mojiPloscki - nasprotnikoviPloscki) / (mojiPloscki + nasprotnikoviPloscki);
+		
+		LinkedList<Poteza> mojePoteze = igra.potezeIgralca(jaz);
+		LinkedList<Poteza> nasprotnikovePoteze = igra.potezeIgralca(jaz == Igralec.BLACK ? Igralec.WHITE : Igralec.BLACK);
+		if (mojePoteze.size() + nasprotnikovePoteze.size() != 0) {
+			ocenaPlosce += 100 * (mojePoteze.size() - nasprotnikovePoteze.size()) / (mojePoteze.size() + nasprotnikovePoteze.size());
+		}
+		
+		int mojiVogali = 0, nasprotnikoviVogali = 0;
+		if (plosca.polje[0][0] != Polje.PRAZNO){
+			
+		}
+		
+		
+		return 0;
 	}
 
 }
