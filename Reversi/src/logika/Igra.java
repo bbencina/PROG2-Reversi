@@ -1,5 +1,6 @@
 package logika;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -45,6 +46,33 @@ public class Igra {
 		}
 	}
 	
+	public static final HashMap<Integer, String> stolpci = new HashMap<Integer, String>();
+	
+	static {
+		stolpci.put(0, "A");
+		stolpci.put(1, "B");
+		stolpci.put(2, "C");
+		stolpci.put(3, "D");
+		stolpci.put(4, "E");
+		stolpci.put(5, "F");
+		stolpci.put(6, "G");
+		stolpci.put(7, "H");
+	}
+	
+	public static final HashMap<String, String> stolpciInverz = new HashMap<String, String>();
+	
+	static {
+		stolpciInverz.put("A", "0");
+		stolpciInverz.put("B", "1");
+		stolpciInverz.put("C", "2");
+		stolpciInverz.put("D", "3");
+		stolpciInverz.put("E", "4");
+		stolpciInverz.put("F", "5");
+		stolpciInverz.put("G", "6");
+		stolpciInverz.put("H", "7");
+	}
+	
+	private String zapis = "";
 	
 	public Igra() {
 		plosca = new Plosca();
@@ -64,7 +92,7 @@ public class Igra {
 			}
 		}
 	}
-	
+
 	public Plosca getPlosca() {
 		return plosca;
 	}
@@ -76,6 +104,8 @@ public class Igra {
 	public boolean igrajPotezo(Poteza p) {
 		if (napolniUgodneCeVeljavna(p)) {
 			this.opraviPotezo(p);
+			zapis += stolpci.get(p.stolpec);
+			zapis += Integer.toString(p.vrstica + 1);
 			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 				igralecNaPotezi = igralecNaPotezi.naslednji();
 			}
@@ -217,5 +247,9 @@ public class Igra {
 			}
 		}
 		this.ugodneSmeri.clear();
+	}
+
+	public String getZapis() {
+		return this.zapis;
 	}
 }

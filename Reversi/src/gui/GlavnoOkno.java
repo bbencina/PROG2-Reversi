@@ -6,7 +6,14 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -29,6 +36,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JLabel status;
 	private JLabel stetjePlosckov;
 	
+	private JFileChooser fc = new JFileChooser();
+	
+	private JMenuItem naloziIgro;
+	private JMenuItem shraniIgro;
 	private JMenuItem zapriOkno;
 	private JMenuItem dvaIgralca;
 	private JMenuItem igralecBeli;
@@ -54,6 +65,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		JMenu oknoMenu = new JMenu("Okno");
 		menuBar.add(oknoMenu);
+		
+		naloziIgro = new JMenuItem("Naloži igro");
+		oknoMenu.add(naloziIgro);
+		naloziIgro.addActionListener(this);
+		
+		shraniIgro = new JMenuItem("Shrani");
+		oknoMenu.add(shraniIgro);
+		shraniIgro.addActionListener(this);
 		
 		zapriOkno = new JMenuItem("Zapri");
 		oknoMenu.add(zapriOkno);
@@ -176,10 +195,85 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		osveziGUI();
 		polje.repaint();
 	}
+	/**
+	 * Metoda pokliče novo igro in odigra vse že shranjene poteze, 
+	 * da lahko uporabnik nadaljuje s shranjeno igro.
+	 * Shranjeno igro lahko igrata naprej samo dva uporabnika drug proti drugemu.
+	 */
+	private void novaIgra(boolean clovekBlack, boolean clovekWhite, int tezavnost, String zapis) {
+		
+		this.igra = new Igra();
+			
+		// Iz zapisa igre izluščimo odigrane poteze in naročimo igri, naj jih odigra.
+		for (int i = 0 ; i < zapis.length(); i+=2) {
+			
+			char crka = zapis.charAt(i);
+			String zapisStolpca = Character.toString(crka);
+			String stolpec = Igra.stolpciInverz.get(zapisStolpca);
+			int vrednostStolpca = Integer.parseInt(stolpec);
+			
+			char vrstica = zapis.charAt(i + 1);
+			String zapisVrstice = Character.toString(vrstica);
+			int vrednostVrstice = Integer.parseInt(zapisVrstice) - 1;
+			
+			igra.igrajPotezo(new Poteza(vrednostVrstice, vrednostStolpca));
+		}
+		
+		if (clovekBlack && clovekWhite) {
+			okupatorBlack = new Clovek(this);
+			okupatorWhite = new Clovek(this);
+		}
+		
+		switch (igra.stanje()){
+		case NA_POTEZI_BLACK: okupatorBlack.zacni_potezo(); break;
+		case NA_POTEZI_WHITE: okupatorWhite.zacni_potezo(); break;
+		default: break;
+		}
+		
+		osveziGUI();
+		polje.repaint();
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == zapriOkno) {
+		if (e.getSource() == naloziIgro) {
+			
+			// Odpremo okno za izbiro datoteke.
+			int option = fc.showOpenDialog(this);
+			if (option == JFileChooser.APPROVE_OPTION) {
+				String ime = fc.getSelectedFile().getPath();
+				BufferedReader vhod;
+				try {
+					vhod = new BufferedReader(new FileReader(ime));
+					
+					String vrstica = vhod.readLine();
+					novaIgra(true, true, this.tezavnost, vrstica);
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		else if(e.getSource() == shraniIgro) {
+			
+			// Odpremo okno za shranjevanje datoteke.
+			int option = fc.showSaveDialog(this);
+			if (option == JFileChooser.APPROVE_OPTION) {
+				String ime = fc.getSelectedFile().getPath();
+				try {
+					PrintWriter izhod = new PrintWriter (new FileWriter(ime));
+					
+					izhod.println(igra.getZapis());
+					
+					izhod.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		else if(e.getSource() == zapriOkno) {
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
 		
@@ -205,26 +299,26 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == lahka) {
 			this.tezavnost = 1;
-			System.out.println("Spremenjena tezavnost na " + tezavnost);
+			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == srednjeTezka) {
 			this.tezavnost = 2;
-			System.out.println("Spremenjena tezavnost na " + tezavnost);
+			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == tezka) {
 			this.tezavnost = 4;
-			System.out.println("Spremenjena tezavnost na " + tezavnost);
+			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == neUpas) {
 			this.tezavnost = 60;
-			System.out.println("Spremenjena tezavnost na " + tezavnost);
+			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		 
 	}
-	
+
 	public void igraj(Poteza p) {
 		this.igra.igrajPotezo(p);
 		this.osveziGUI();
