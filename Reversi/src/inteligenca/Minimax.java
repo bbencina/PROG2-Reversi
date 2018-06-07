@@ -15,18 +15,16 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 	private GlavnoOkno master;
 	
 	private int globina;
-	private int alpha, beta;
-	
-	private Igralec jaz;
-	
 	private static int MINUSNESKONCNO = -1000000000;
 	private static int NESKONCNO = 1000000000;
+	private static final int ALPHA = MINUSNESKONCNO;
+	private static final int BETA = NESKONCNO;
+	
+	private Igralec jaz;
 	
 	public Minimax(GlavnoOkno master, int globina){
 		this.master = master;
 		this.globina = globina;
-		alpha = MINUSNESKONCNO;
-		beta = NESKONCNO;
 	}
 
 	@Override
@@ -35,10 +33,10 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		this.jaz = igra.getIgralecNaPotezi();
 		
 		// če se kliče naivni minimax
-		OcenjenaPoteza p = minimax(0, igra);
+		//OcenjenaPoteza p = minimax(0, igra);
 		
 		// če se kliče nenaivni minimax - alpha-beta pruning
-		//OcenjenaPoteza p = alphabeta(0, igra);
+		OcenjenaPoteza p = alphabeta(0, igra, ALPHA, BETA);
 		
 		assert(p.poteza != null);
 		System.out.println("Minimax je izračunal potezo: " + p);
@@ -107,7 +105,7 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		return new OcenjenaPoteza(najboljsa, ocenaNajboljse);
 	}
 	
-	private OcenjenaPoteza alphabeta (int i, Igra igra) {
+	private OcenjenaPoteza alphabeta (int i, Igra igra, int alpha, int beta) {
 		Igralec trenutniIgralec = null;
 		OcenjenaPoteza v;
 		
@@ -145,7 +143,7 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 				
 				System.out.println(++j);
 				
-				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre);
+				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre, alpha, beta);
 				
 				if (v.poteza == null || v.vrednost < vmesna.vrednost){
 					v = new OcenjenaPoteza(p, vmesna.vrednost);
@@ -171,7 +169,7 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 				
 				System.out.println(++j);
 				
-				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre);
+				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre, alpha, beta);
 				
 				if (v.poteza == null || v.vrednost > vmesna.vrednost){
 					v =  new OcenjenaPoteza(p, vmesna.vrednost);
