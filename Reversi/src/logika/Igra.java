@@ -18,7 +18,7 @@ public class Igra {
 	private Plosca plosca;
 	
 	
-	// Moralo bi pisati private, a potrebujem public za jUnit teste.
+	// Moralo bi pisati private, a potrebujem public za JUnit teste.
 	public HashSet<Smer> ugodneSmeri = new HashSet<Smer>();
 	
 	private static final Smer[] smer;
@@ -46,6 +46,9 @@ public class Igra {
 		}
 	}
 	
+	/**
+	 *Nastavi slovar stolpcev in pripadajočih črk za pregleden zapis.
+	 */
 	public static final HashMap<Integer, String> stolpci = new HashMap<Integer, String>();
 	
 	static {
@@ -59,6 +62,9 @@ public class Igra {
 		stolpci.put(7, "H");
 	}
 	
+	/**
+	 * Nastavi inverzni slovaar stolpcev, potreben za prebiranje igre iz shranjenega zapisa.
+	 */
 	public static final HashMap<String, String> stolpciInverz = new HashMap<String, String>();
 	
 	static {
@@ -72,6 +78,7 @@ public class Igra {
 		stolpciInverz.put("H", "7");
 	}
 	
+	// Zapis igre
 	private String zapis = "";
 	
 	public Igra() {
@@ -104,8 +111,11 @@ public class Igra {
 	public boolean igrajPotezo(Poteza p) {
 		if (napolniUgodneCeVeljavna(p)) {
 			this.opraviPotezo(p);
+			
 			zapis += stolpci.get(p.stolpec);
+			// Vrstice tipično štejemo od 1 dalje
 			zapis += Integer.toString(p.vrstica + 1);
+			
 			if (! potezeIgralca(igralecNaPotezi.naslednji()).isEmpty()) {
 				igralecNaPotezi = igralecNaPotezi.naslednji();
 			}

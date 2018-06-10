@@ -51,7 +51,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem tezka;
 	private JMenuItem neUpas;
 	
-	//definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
+	// Definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
 	private int tezavnost = 2;
 	
 	public GlavnoOkno() {
@@ -120,7 +120,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		tezavnostMenu.add(neUpas);
 		neUpas.addActionListener(this);
 		
-		// igralno polje
+		// Igralno polje
 		polje = new IgralnoPolje(this);
 		GridBagConstraints polje_layout = new GridBagConstraints();
 		polje_layout.gridx = 0;
@@ -130,7 +130,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
-		// statusna vrstica za trenutno število ploščkov
+		// Statusna vrstica za trenutno število ploščkov
 			stetjePlosckov = new JLabel();
 			stetjePlosckov.setFont(new Font(stetjePlosckov.getFont().getName(),
 									Font.BOLD,
@@ -141,7 +141,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			stetjePlosckov_layout.anchor = GridBagConstraints.CENTER;
 			getContentPane().add(stetjePlosckov, stetjePlosckov_layout);
 		
-		// statusna vrstica za sporočila
+		// Statusna vrstica za sporočila
 		status = new JLabel();
 		status.setFont(new Font(status.getFont().getName(),
 							    Font.BOLD,
@@ -152,9 +152,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		status_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, status_layout);
 		
-		/**
-		 * Privzeto je, da sta oba igralca človeka.
-		 */
+		
+		// Privzeto je, da sta oba igralca človeka.
 		novaIgra(true, true, tezavnost);
 	}
 	
@@ -163,8 +162,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		if (okupatorWhite != null) okupatorWhite.prekini();
 		
 		this.igra = new Igra();
-		
-		System.out.println(tezavnost);
 		
 		if (clovekBlack && clovekWhite) {
 			okupatorBlack = new Clovek(this);
@@ -195,6 +192,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		osveziGUI();
 		polje.repaint();
 	}
+	
 	/**
 	 * Metoda pokliče novo igro in odigra vse že shranjene poteze, 
 	 * da lahko uporabnik nadaljuje s shranjeno igro.
@@ -248,7 +246,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 					
 					String vrstica = vhod.readLine();
 					novaIgra(true, true, this.tezavnost, vrstica);
-
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -264,8 +261,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				try {
 					PrintWriter izhod = new PrintWriter (new FileWriter(ime));
 					
-					izhod.println(igra.getZapis());
-					
+					izhod.println(igra.getZapis());	
 					izhod.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -299,22 +295,18 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == lahka) {
 			this.tezavnost = 1;
-			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == srednjeTezka) {
 			this.tezavnost = 2;
-			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == tezka) {
 			this.tezavnost = 4;
-			System.out.println("Spremenjena težavnost na " + tezavnost);
 		}
 		
 		else if (e.getSource() == neUpas) {
-			this.tezavnost = 60;
-			System.out.println("Spremenjena težavnost na " + tezavnost);
+			this.tezavnost = 7;
 		}
 		 
 	}

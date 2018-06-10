@@ -170,7 +170,6 @@ public class Ocena {
 				nasprotnikoviVogali += 1;
 			}
 		}
-		
 		if (mojiVogali + nasprotnikoviVogali != 0) {
 			ocenaPlosce += 100 * (mojiVogali - nasprotnikoviVogali) / (mojiVogali + nasprotnikoviVogali);
 		}
