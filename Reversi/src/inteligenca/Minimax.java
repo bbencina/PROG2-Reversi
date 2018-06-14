@@ -15,11 +15,6 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 	private GlavnoOkno master;
 	
 	private int globina;
-	private static int MINUSNESKONCNO = -1000000000;
-	private static int NESKONCNO = 1000000000;
-	private static final int ALPHA = MINUSNESKONCNO;
-	private static final int BETA = NESKONCNO;
-	
 	private Igralec jaz;
 	
 	public Minimax(GlavnoOkno master, int globina){
@@ -32,11 +27,7 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		Igra igra = master.kopijaIgre();
 		this.jaz = igra.getIgralecNaPotezi();
 		
-		// če se kliče naivni minimax
-		//OcenjenaPoteza p = minimax(0, igra);
-		
-		// če se kliče nenaivni minimax - alpha-beta pruning
-		OcenjenaPoteza p = alphabeta(0, igra, ALPHA, BETA);
+		OcenjenaPoteza p = minimax(0, igra);
 		
 		assert(p.poteza != null);
 		return p.poteza;
@@ -104,69 +95,5 @@ public class Minimax extends SwingWorker<Poteza, Object> {
 		return new OcenjenaPoteza(najboljsa, ocenaNajboljse);
 	}
 	
-	private OcenjenaPoteza alphabeta (int i, Igra igra, int alpha, int beta) {
-		Igralec trenutniIgralec = null;
-		OcenjenaPoteza v;
-		
-		switch (igra.stanje()){
-		case NA_POTEZI_BLACK: trenutniIgralec = Igralec.BLACK; break;
-		case NA_POTEZI_WHITE: trenutniIgralec = Igralec.WHITE; break;
-		case ZMAGA_BLACK:
-			return new OcenjenaPoteza(
-					null, jaz == Igralec.BLACK ? Ocena.ZMAGA : Ocena.PORAZ);
-		case ZMAGA_WHITE:
-			return new OcenjenaPoteza(
-					null, jaz == Igralec.WHITE ? Ocena.ZMAGA : Ocena.PORAZ);
-		case NEODLOCENO:
-			return new OcenjenaPoteza(null, Ocena.NEODLOCENO);
-		}
-		
-		// ali smo pregloboko
-		if (i >= globina){
-			return new OcenjenaPoteza(
-					null,
-					Ocena.oceniPozicijo(igra, jaz));
-		}
-		
-		if (trenutniIgralec == this.jaz){
-			v = new OcenjenaPoteza(null, MINUSNESKONCNO);
-			
-			for (Poteza p : igra.potezeIgralca(trenutniIgralec)){
-				Igra kopijaIgre = new Igra(igra);
-				kopijaIgre.igrajPotezo(p);
-
-				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre, alpha, beta);
-				
-				if (v.poteza == null || v.vrednost < vmesna.vrednost){
-					v = new OcenjenaPoteza(p, vmesna.vrednost);
-					alpha = Math.max(alpha, v.vrednost);
-					if (beta <= alpha){
-						break;
-					}
-				}
-			}
-			return v;
-			
-		} else {
-			v = new OcenjenaPoteza(null, NESKONCNO);
-			
-			for (Poteza p : igra.potezeIgralca(trenutniIgralec)){
-				Igra kopijaIgre = new Igra(igra);
-				kopijaIgre.igrajPotezo(p);
-				
-				OcenjenaPoteza vmesna = alphabeta(i+1, kopijaIgre, alpha, beta);
-				
-				if (v.poteza == null || v.vrednost > vmesna.vrednost){
-					v =  new OcenjenaPoteza(p, vmesna.vrednost);
-					beta = Math.min(beta, v.vrednost);
-					if (beta <= alpha){
-						break;
-					}
-				}
-				
-			}
-			return v;
-		}
-	}
 	
 }

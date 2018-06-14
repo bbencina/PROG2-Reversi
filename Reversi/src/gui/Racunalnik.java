@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.SwingWorker;
 
+import inteligenca.Alphabeta;
 import inteligenca.Minimax;
 import logika.Poteza;
 
@@ -19,7 +20,7 @@ public class Racunalnik extends Okupator {
 	@Override
 	public void zacni_potezo() {
 		// razmisli in izbere potezo
-		napadalec = new Minimax(master, tezavnost);
+		napadalec = new Alphabeta(master, tezavnost);
 		napadalec.execute();
 
 	}
