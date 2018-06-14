@@ -4,6 +4,7 @@ encoding//src/gui/GlavnoOkno.java=UTF-8
 encoding//src/gui/IgralnoPolje.java=UTF-8
 encoding//src/gui/Okupator.java=UTF-8
 encoding//src/gui/Racunalnik.java=UTF-8
+encoding//src/inteligenca/Alphabeta.java=UTF-8
 encoding//src/inteligenca/Minimax.java=UTF-8
 encoding//src/inteligenca/Ocena.java=UTF-8
 encoding//src/inteligenca/OcenjenaPoteza.java=UTF-8

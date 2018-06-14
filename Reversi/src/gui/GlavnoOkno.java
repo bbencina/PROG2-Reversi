@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import logika.Igra;
 import logika.Plosca;
@@ -51,10 +52,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem tezka;
 	private JMenuItem neUpas;
 	
+	private JMenuItem mozganiMinimax;
+	private JMenuItem mozganiAlphabeta;
+	
 	// Definira globino algoritma Minimax; tako lahko omogočimo uporabniku, da izbere med različnimi stopnjami težavnosti
-	private int tezavnost = 2;
+	private int tezavnost;
+	
+	// Definira katero inteligenco bodo uporabljali računalniki pri igranju
+	private Mozgani mozgani;
 	
 	public GlavnoOkno() {
+		this.tezavnost = 2;
+		this.mozgani = Mozgani.MOZGANI_ALPHABETA;
+		
 		this.setTitle("Reversi");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new GridBagLayout());
@@ -120,6 +130,17 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		tezavnostMenu.add(neUpas);
 		neUpas.addActionListener(this);
 		
+		JMenu mozganiMenu = new JMenu("Izberi možgane");
+		menuBar.add(mozganiMenu);
+		
+		mozganiMinimax = new JMenuItem("Počasnejši, a bolj natančni");
+		mozganiMenu.add(mozganiMinimax);
+		mozganiMinimax.addActionListener(this);
+		
+		mozganiAlphabeta = new JMenuItem("Hitrejši, a bolj površni (default)");
+		mozganiMenu.add(mozganiAlphabeta);
+		mozganiAlphabeta.addActionListener(this);
+		
 		// Igralno polje
 		polje = new IgralnoPolje(this);
 		GridBagConstraints polje_layout = new GridBagConstraints();
@@ -162,6 +183,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		if (okupatorWhite != null) okupatorWhite.prekini();
 		
 		this.igra = new Igra();
+		
+		if (this.tezavnost == 7 && this.mozgani == Mozgani.MOZGANI_MINIMAX && 
+				(clovekBlack == false || clovekWhite == false)) {
+			String sporocilo = "Pri največji težavnosti ste izbrali počasno inteligenco.\nIgra utegne biti zato zelo počasna.";
+			opozoriloPopUp(sporocilo);
+		}
 		
 		if (clovekBlack && clovekWhite) {
 			okupatorBlack = new Clovek(this);
@@ -280,8 +307,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if(e.getSource() == igralecCrni) {
 			// igra proti računalniku, igralec ima prvo potezo
-			novaIgra(true, false, this.tezavnost);
-			
+			novaIgra(true, false, this.tezavnost);	
 		}
 		
 		else if(e.getSource() == igralecBeli) {
@@ -307,6 +333,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == neUpas) {
 			this.tezavnost = 7;
+		}
+		
+		else if (e.getSource() == mozganiMinimax) {
+			this.mozgani = Mozgani.MOZGANI_MINIMAX;
+		}
+		
+		else if (e.getSource() == mozganiAlphabeta) {
+			this.mozgani = Mozgani.MOZGANI_ALPHABETA;
 		}
 		 
 	}
@@ -369,5 +403,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	public Igralec getIgralec() {
 		return (igra == null ? null : igra.getIgralecNaPotezi());
 	}
+	
+	public Mozgani getMozgani() {
+		return this.mozgani;
+	}
+	
+	public static void opozoriloPopUp(String sporocilo) {
+        JOptionPane.showMessageDialog(null, sporocilo, "Opozorilo!", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 }
