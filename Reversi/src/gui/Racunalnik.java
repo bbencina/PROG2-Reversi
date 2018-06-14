@@ -9,18 +9,25 @@ import logika.Poteza;
 public class Racunalnik extends Okupator {
 	private GlavnoOkno master;
 	private int tezavnost;
+	private Mozgani mozgani;
 	
 	private SwingWorker<Poteza, Object> napadalec;
 
 	public Racunalnik(GlavnoOkno master, int tezavnost) {
 		this.master = master;
 		this.tezavnost = tezavnost;
+		this.mozgani = master.getMozgani();
 	}
 
 	@Override
 	public void zacni_potezo() {
 		// razmisli in izbere potezo
-		napadalec = new Alphabeta(master, tezavnost);
+		switch (this.mozgani) {
+			case MOZGANI_ALPHABETA: napadalec = new Alphabeta(master, tezavnost); break;
+			case MOZGANI_MINIMAX: napadalec = new Minimax(master, tezavnost); break;
+			
+			default: napadalec = new Alphabeta(master, tezavnost);
+		}
 		napadalec.execute();
 
 	}
