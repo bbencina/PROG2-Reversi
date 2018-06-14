@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import logika.Igra;
 import logika.Plosca;
@@ -182,6 +183,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		if (okupatorWhite != null) okupatorWhite.prekini();
 		
 		this.igra = new Igra();
+		
+		if (this.tezavnost == 7 && this.mozgani == Mozgani.MOZGANI_MINIMAX && 
+				(clovekBlack == false || clovekWhite == false)) {
+			String sporocilo = "Pri največji težavnosti ste izbrali počasno inteligenco.\nIgra utegne biti zato zelo počasna.";
+			opozoriloPopUp(sporocilo);
+		}
 		
 		if (clovekBlack && clovekWhite) {
 			okupatorBlack = new Clovek(this);
@@ -400,5 +407,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	public Mozgani getMozgani() {
 		return this.mozgani;
 	}
+	
+	public static void opozoriloPopUp(String sporocilo) {
+        JOptionPane.showMessageDialog(null, sporocilo, "Opozorilo!", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 }
